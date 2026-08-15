@@ -18,7 +18,7 @@ Plataforma web para que músicos y artistas independientes creen una página pro
 <br>
 
 <p align="center">
-  <img src="imagenes/mvp-musync/perfilpublico-MUSYNC-1.png" width="820" alt="Perfil público de MUSYNC">
+  <img src="src/assets/imagenes/mvp-musync/perfilpublico-MUSYNC-1.png" width="820" alt="Perfil público de MUSYNC">
 </p>
 
 <br>
@@ -111,7 +111,7 @@ Música y productos digitales pueden agregarse al carrito. Los servicios muestra
 8. El artista revisa la solicitud desde su dashboard.
 
 <p align="center">
-<img src="imagenes/diagramas/diagramadeflujo-MUSYNC.png" width="620" alt="Diagrama de flujo del MVP">
+<img src="src/assets/imagenes/diagramas/diagramadeflujo-MUSYNC.png" width="620" alt="Diagrama de flujo del MVP">
 <br><sub>Diagrama de flujo completo: registro, login, dashboard, publicaciones, perfil público, carrito y cotizaciones.</sub>
 </p>
 
@@ -133,27 +133,27 @@ Música y productos digitales pueden agregarse al carrito. Los servicios muestra
 <table>
 <tr>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/landing-MUSYNC-1.png" width="380" alt="Landing Page"><br>
+<img src="src/assets/imagenes/mvp-musync/landing-MUSYNC-1.png" width="380" alt="Landing Page"><br>
 <sub><b>Landing Page</b> — <code>/</code></sub>
 </td>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/perfilpublico-MUSYNC-1.png" width="380" alt="Perfil público del artista"><br>
+<img src="src/assets/imagenes/mvp-musync/perfilpublico-MUSYNC-1.png" width="380" alt="Perfil público del artista"><br>
 <sub><b>Perfil público del artista</b> — <code>/artista/:username</code></sub>
 </td>
 </tr>
 <tr>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/detallepublicacion-MUSYNC-1.png" width="380" alt="Detalle de publicación"><br>
+<img src="src/assets/imagenes/mvp-musync/detallepublicacion-MUSYNC-1.png" width="380" alt="Detalle de publicación"><br>
 <sub><b>Detalle de publicación</b> — <code>/publication/:id</code></sub>
 </td>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/carrito-MUSYNC-1.png" width="380" alt="Carrito"><br>
+<img src="src/assets/imagenes/mvp-musync/carrito-MUSYNC-1.png" width="380" alt="Carrito"><br>
 <sub><b>Carrito</b> — <code>/cart</code></sub>
 </td>
 </tr>
 <tr>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/solicitarcotizacion-MUSYNC-1.png" width="380" alt="Solicitar cotización"><br>
+<img src="src/assets/imagenes/mvp-musync/solicitarcotizacion-MUSYNC-1.png" width="380" alt="Solicitar cotización"><br>
 <sub><b>Solicitar cotización</b> — <code>/publication/:id/cotizar</code></sub>
 </td>
 <td width="50%" align="center"></td>
@@ -174,31 +174,31 @@ Música y productos digitales pueden agregarse al carrito. Los servicios muestra
 <table>
 <tr>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/dashboard-MUSYNC-1.png" width="380" alt="Dashboard"><br>
+<img src="src/assets/imagenes/mvp-musync/dashboard-MUSYNC-1.png" width="380" alt="Dashboard"><br>
 <sub><b>Panel principal</b> — <code>/dashboard</code></sub>
 </td>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/sidebar-MUSYNC-1.png" width="380" alt="Sidebar de navegación privada"><br>
+<img src="src/assets/imagenes/mvp-musync/sidebar-MUSYNC-1.png" width="380" alt="Sidebar de navegación privada"><br>
 <sub><b>Sidebar de navegación privada</b></sub>
 </td>
 </tr>
 <tr>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/miperfil-MUSYNC-1.png" width="380" alt="Editar perfil"><br>
+<img src="src/assets/imagenes/mvp-musync/miperfil-MUSYNC-1.png" width="380" alt="Editar perfil"><br>
 <sub><b>Editar perfil</b> — <code>/dashboard/profile</code></sub>
 </td>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/mispublicaciones-MUSYNC-1.png" width="380" alt="Mis publicaciones"><br>
+<img src="src/assets/imagenes/mvp-musync/mispublicaciones-MUSYNC-1.png" width="380" alt="Mis publicaciones"><br>
 <sub><b>Mis publicaciones</b> — <code>/dashboard/publications</code></sub>
 </td>
 </tr>
 <tr>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/crearpublicacion-MUSYNC-1.png" width="380" alt="Crear publicación"><br>
+<img src="src/assets/imagenes/mvp-musync/crearpublicacion-MUSYNC-1.png" width="380" alt="Crear publicación"><br>
 <sub><b>Crear publicación</b> — <code>/dashboard/publications/new</code></sub>
 </td>
 <td width="50%" align="center">
-<img src="imagenes/mvp-musync/cotizacionesycontrataciones-MUSYNC-1.png" width="380" alt="Cotizaciones y contrataciones"><br>
+<img src="src/assets/imagenes/mvp-musync/cotizacionesycontrataciones-MUSYNC-1.png" width="380" alt="Cotizaciones y contrataciones"><br>
 <sub><b>Cotizaciones y contrataciones</b> — <code>/dashboard/quotes</code></sub>
 </td>
 </tr>
@@ -207,12 +207,12 @@ Música y productos digitales pueden agregarse al carrito. Los servicios muestra
 ### Wireframes y flujo de navegación
 
 <p align="center">
-<img src="imagenes/mvp-musync/wireframes-MUSYNC-1.png" width="720" alt="Wireframes de las 12 vistas del MVP">
+<img src="src/assets/imagenes/mvp-musync/wireframes-MUSYNC-1.png" width="720" alt="Wireframes de las 12 vistas del MVP">
 <br><sub>Estructura de las 12 vistas del MVP antes del mockup final.</sub>
 </p>
 
 <p align="center">
-<img src="imagenes/mvp-musync/flujo-navegacion-MUSYNC-1.png" width="720" alt="Diagrama de flujo y navegación">
+<img src="src/assets/imagenes/mvp-musync/flujo-navegacion-MUSYNC-1.png" width="720" alt="Diagrama de flujo y navegación">
 <br><sub>Rutas públicas y privadas, flujo del artista, flujo del visitante y mapeo a componentes Bootstrap.</sub>
 </p>
 
@@ -277,7 +277,7 @@ El modelo relacional utiliza siete tablas:
 | `order_items` | Publicaciones incluidas en cada orden, con cantidad y precio unitario. |
 
 <p align="center">
-<img src="imagenes/diagramas/diagramahorizontalBD.png" width="900" alt="Diagrama entidad-relación de la base de datos">
+<img src="src/assets/imagenes/diagramas/diagramahorizontalBD.png" width="900" alt="Diagrama entidad-relación de la base de datos">
 <br><sub>Diagrama entidad-relación: <code>users</code>, <code>artist_profiles</code>, <code>publications</code>, <code>shows</code>, <code>quotes</code>, <code>orders</code> y <code>order_items</code>.</sub>
 </p>
 
