@@ -1,0 +1,22 @@
+export const currentUser = {
+  id: 1,
+  email: 'erami@musync.com',
+  name: 'Erami',
+  artistProfile: {
+    id: 1,
+    userId: 1,
+    artistName: 'ERAMI',
+    username: 'erami',
+    roleLine: 'Productor · Compositor · Vocalista',
+    availability: 'Disponible para trabajar',
+    bio: 'Productor, compositor y vocalista. Electrónica con texturas ambient. Disponible para producción, mezcla y colaboraciones.',
+    city: 'Santiago',
+    country: 'Chile',
+    tags: ['Electrónica', 'Ambient'],
+    avatarUrl: null,
+    coverUrl: null,
+    spotifyUrl: '',
+    youtubeUrl: '',
+    instagramUrl: '',
+  },
+}
