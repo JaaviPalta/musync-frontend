@@ -1,0 +1,25 @@
+.pattern {
+  background-color: var(--musync-surface);
+  border-radius: var(--musync-radius);
+  background-size: 28px 28px;
+}
+
+.accent {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(var(--musync-accent-rgb), 0.35) 0px,
+    rgba(var(--musync-accent-rgb), 0.35) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+
+.neutral {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(233, 233, 237, 0.08) 0px,
+    rgba(233, 233, 237, 0.08) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}

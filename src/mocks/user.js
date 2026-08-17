@@ -15,8 +15,8 @@ export const currentUser = {
     tags: ['Electrónica', 'Ambient'],
     avatarUrl: null,
     coverUrl: null,
-    spotifyUrl: '',
-    youtubeUrl: '',
-    instagramUrl: '',
+    spotifyUrl: 'https://open.spotify.com/artist/erami',
+    youtubeUrl: 'https://youtube.com/@erami',
+    instagramUrl: 'https://instagram.com/erami',
   },
 }

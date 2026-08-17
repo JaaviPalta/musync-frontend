@@ -35,6 +35,20 @@ body {
   --bs-card-border-color: transparent;
 }
 
+.btn-primary {
+  --bs-btn-color: var(--musync-bg);
+  --bs-btn-bg: var(--musync-accent);
+  --bs-btn-border-color: var(--musync-accent);
+  --bs-btn-hover-color: var(--musync-bg);
+  --bs-btn-hover-bg: color-mix(in srgb, var(--musync-accent) 85%, white);
+  --bs-btn-hover-border-color: color-mix(in srgb, var(--musync-accent) 85%, white);
+  --bs-btn-active-color: var(--musync-bg);
+  --bs-btn-active-bg: color-mix(in srgb, var(--musync-accent) 75%, white);
+  --bs-btn-active-border-color: color-mix(in srgb, var(--musync-accent) 75%, white);
+  --bs-btn-disabled-bg: var(--musync-accent);
+  --bs-btn-disabled-border-color: var(--musync-accent);
+}
+
 .btn-outline-primary {
   --bs-btn-color: var(--musync-accent);
   --bs-btn-border-color: var(--musync-accent);

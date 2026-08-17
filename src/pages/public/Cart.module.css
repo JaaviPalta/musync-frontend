@@ -1,0 +1,154 @@
+.page {
+  padding: 32px 0 64px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: var(--musync-text-muted);
+}
+
+.emptyState {
+  background-color: var(--musync-surface);
+  border-radius: var(--musync-radius);
+  padding: 48px;
+  text-align: center;
+  margin-top: 24px;
+}
+
+.emptyState a {
+  color: var(--musync-accent);
+  text-decoration: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--musync-surface);
+  border-radius: var(--musync-radius);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.itemThumb {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.itemBadge {
+  align-self: flex-start;
+  background-color: var(--musync-bg);
+  color: var(--musync-text-muted);
+  border-radius: var(--musync-radius);
+  padding: 2px 8px;
+  font-size: 0.7rem;
+}
+
+.itemArtist {
+  color: var(--musync-text-muted);
+  font-size: 0.85rem;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--musync-border);
+  border-radius: var(--musync-radius);
+  padding: 6px 12px;
+}
+
+.stepper button {
+  background: none;
+  border: none;
+  color: var(--musync-text);
+  display: flex;
+  cursor: pointer;
+}
+
+.itemPrice {
+  font-weight: 600;
+  min-width: 80px;
+  text-align: right;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: var(--musync-text-muted);
+  cursor: pointer;
+}
+
+.removeBtn:hover {
+  color: var(--musync-accent);
+}
+
+.continueLink {
+  display: inline-block;
+  color: var(--musync-accent);
+  text-decoration: none;
+  margin-top: 8px;
+}
+
+.summary {
+  background-color: var(--musync-surface);
+  border-radius: var(--musync-radius);
+  padding: 24px;
+}
+
+.summaryTitle {
+  display: block;
+  color: var(--musync-accent);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  color: var(--musync-text-muted);
+  padding: 6px 0;
+}
+
+.summaryDivider {
+  border-color: var(--musync-border);
+  margin: 12px 0;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.checkoutBtn {
+  width: 100%;
+}
+
+.summaryHint {
+  color: var(--musync-text-muted);
+  font-size: 0.8rem;
+  margin: 16px 0 0;
+}
+
+.summaryHint code {
+  color: var(--musync-text);
+}

@@ -1,0 +1,87 @@
+.page {
+  padding: 32px 0 64px;
+}
+
+.notFound {
+  padding: 64px 0;
+}
+
+.backLink {
+  color: var(--musync-accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.badge {
+  display: inline-block;
+  background-color: var(--musync-surface);
+  color: var(--musync-text-muted);
+  border-radius: var(--musync-radius);
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.byline {
+  display: inline-block;
+  color: var(--musync-accent);
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.deliveryHint {
+  color: var(--musync-text-muted);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.description {
+  margin-top: 20px;
+  color: var(--musync-text);
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.portfolioHint {
+  color: var(--musync-text-muted);
+  margin: 0;
+}
+
+.specs {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--musync-border);
+}
+
+.specRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  color: var(--musync-text-muted);
+}
+
+.specRow span:last-child {
+  color: var(--musync-text);
+}

@@ -32,6 +32,7 @@ const AppRouter = () => {
         <Route path="/artista/:username" element={<PublicProfile />} />
         <Route path="/publication/:id" element={<PublicationDetail />} />
         <Route path="/publication/:id/cotizar" element={<RequestQuote />} />
+        <Route path="/cotizar" element={<RequestQuote />} />
         <Route path="/cart" element={<Cart />} />
       </Route>
 
