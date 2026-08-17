@@ -1,0 +1,138 @@
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: var(--musync-text-muted);
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  background: none;
+  border: 1px solid var(--musync-border);
+  color: var(--musync-text);
+  border-radius: var(--musync-radius);
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.filterBtnActive {
+  background-color: var(--musync-accent);
+  border-color: var(--musync-accent);
+  color: var(--musync-bg);
+}
+
+.search {
+  max-width: 260px;
+}
+
+.tableWrap {
+  background-color: var(--musync-surface);
+  border-radius: var(--musync-radius);
+  padding: 8px 20px;
+}
+
+.table {
+  margin-bottom: 0;
+  color: var(--musync-text);
+}
+
+.table thead th {
+  color: var(--musync-text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom-color: var(--musync-border);
+  font-weight: 500;
+}
+
+.table td {
+  border-bottom-color: var(--musync-border);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.titleCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.thumb {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.typeBadge {
+  background-color: var(--musync-bg);
+  border-radius: var(--musync-radius);
+  padding: 3px 10px;
+  font-size: 0.85rem;
+}
+
+.statusBadge {
+  color: var(--musync-text-muted);
+}
+
+.statusDraft {
+  color: var(--musync-text-muted);
+  font-style: italic;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.actions a,
+.actions button {
+  color: var(--musync-text-muted);
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  cursor: pointer;
+}
+
+.actions a:hover,
+.actions button:hover {
+  color: var(--musync-accent);
+}
+
+.emptyState {
+  color: var(--musync-text-muted);
+  padding: 20px 0;
+  margin: 0;
+}
+
+.footerHint {
+  color: var(--musync-text-muted);
+  font-size: 0.85rem;
+  margin-top: 16px;
+}
+
+.footerHint code {
+  color: var(--musync-text);
+}

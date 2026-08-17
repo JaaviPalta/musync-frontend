@@ -554,7 +554,7 @@ Esta API no incluye pagos reales, entrega protegida de archivos, seguidores, lik
 | Tipografía | Inter |
 | Radios | 8 px |
 | Botones | Principalmente *outline* |
-| Iconografía | Phosphor |
+| Iconografía | Lucide |
 
 La estética busca ser oscura, limpia, moderna y musical. El concepto anterior de *Claude Design* se utiliza como referencia visual, adaptado al alcance real del MVP.
 

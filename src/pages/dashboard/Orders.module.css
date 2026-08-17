@@ -1,0 +1,63 @@
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: var(--musync-text-muted);
+  max-width: 65ch;
+}
+
+.summary {
+  display: flex;
+  gap: 20px;
+  color: var(--musync-text-muted);
+  margin: 16px 0 24px;
+}
+
+.summary span:first-child {
+  color: var(--musync-text);
+  font-weight: 600;
+}
+
+.emptyState {
+  color: var(--musync-text-muted);
+}
+
+.tableWrap {
+  background-color: var(--musync-surface);
+  border-radius: var(--musync-radius);
+  padding: 8px 20px;
+}
+
+.table {
+  margin-bottom: 0;
+  color: var(--musync-text);
+}
+
+.table thead th {
+  color: var(--musync-text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom-color: var(--musync-border);
+  font-weight: 500;
+}
+
+.table td {
+  border-bottom-color: var(--musync-border);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.statusBadge {
+  background-color: rgba(94, 197, 133, 0.18);
+  color: #6fd39a;
+  border-radius: var(--musync-radius);
+  padding: 3px 10px;
+  font-size: 0.8rem;
+}

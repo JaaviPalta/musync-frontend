@@ -43,6 +43,7 @@ const AppRouter = () => {
           <Route path="/dashboard/profile" element={<EditProfile />} />
           <Route path="/dashboard/publications" element={<MyPublications />} />
           <Route path="/dashboard/publications/new" element={<NewPublication />} />
+          <Route path="/dashboard/publications/:id/edit" element={<NewPublication />} />
           <Route path="/dashboard/quotes" element={<Quotes />} />
           <Route path="/dashboard/shows" element={<Shows />} />
           <Route path="/dashboard/orders" element={<Orders />} />

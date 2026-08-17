@@ -1,0 +1,128 @@
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: var(--musync-text-muted);
+  margin-bottom: 24px;
+}
+
+.subtitle a {
+  color: var(--musync-accent);
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: var(--musync-surface);
+  border-radius: var(--musync-radius);
+  padding: 20px;
+  text-decoration: none;
+  height: 100%;
+}
+
+.statLabel {
+  color: var(--musync-text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.statValue {
+  color: var(--musync-text);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.panel {
+  background-color: var(--musync-surface);
+  border-radius: var(--musync-radius);
+  padding: 24px;
+  height: 100%;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.panelTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.panelLink {
+  color: var(--musync-accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--musync-border);
+}
+
+.listItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.listThumb {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.listInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.listInfo span {
+  color: var(--musync-text-muted);
+  font-size: 0.85rem;
+}
+
+.listPrice {
+  color: var(--musync-text);
+  font-weight: 500;
+}
+
+.quoteItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--musync-border);
+}
+
+.quoteItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.quoteHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.quoteHeader span {
+  color: var(--musync-text-muted);
+  font-size: 0.8rem;
+}
+
+.quoteMeta {
+  color: var(--musync-text-muted);
+  font-size: 0.9rem;
+}

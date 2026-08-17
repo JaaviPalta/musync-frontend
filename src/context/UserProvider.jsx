@@ -8,8 +8,14 @@ const UserProvider = ({ children }) => {
   const login = () => setUser(currentUser)
   const logout = () => setUser(null)
 
+  const updateProfile = (patch) =>
+    setUser((current) => ({
+      ...current,
+      artistProfile: { ...current.artistProfile, ...patch },
+    }))
+
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, updateProfile }}>
       {children}
     </UserContext.Provider>
   )

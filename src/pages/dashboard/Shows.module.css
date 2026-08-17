@@ -1,0 +1,72 @@
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: var(--musync-text-muted);
+  margin-bottom: 8px;
+}
+
+.panel {
+  background-color: var(--musync-surface);
+  border-radius: var(--musync-radius);
+  padding: 24px;
+}
+
+.panelTitle {
+  display: block;
+  color: var(--musync-accent);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.emptyState {
+  color: var(--musync-text-muted);
+  margin: 0 0 12px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--musync-border);
+}
+
+.item:last-of-type {
+  border-bottom: none;
+}
+
+.itemMeta {
+  display: block;
+  color: var(--musync-text-muted);
+  font-size: 0.85rem;
+}
+
+.item button {
+  background: none;
+  border: none;
+  color: var(--musync-text-muted);
+  cursor: pointer;
+  display: flex;
+  flex-shrink: 0;
+}
+
+.item button:hover {
+  color: var(--musync-accent);
+}
+
+.addForm {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--musync-border);
+}
+
+.addBtn {
+  width: 100%;
+}
