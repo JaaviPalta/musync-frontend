@@ -586,8 +586,8 @@ La estética busca ser oscura, limpia, moderna y musical. El concepto anterior d
 | Integrante | Área principal |
 |---|---|
 | Javiera | Frontend |
-| Integrante 2 | Backend |
-| Integrante 3 | Backend |
+| Milton | Backend |
+| Germán | Backend |
 
 ## Estado
 
