@@ -19,7 +19,9 @@
   --bs-primary: var(--musync-accent);
   --bs-primary-rgb: var(--musync-accent-rgb);
   --bs-link-color: var(--musync-accent);
+  --bs-link-color-rgb: var(--musync-accent-rgb);
   --bs-link-hover-color: var(--musync-accent);
+  --bs-link-hover-color-rgb: var(--musync-accent-rgb);
   --bs-font-sans-serif: 'Inter', system-ui, -apple-system, sans-serif;
 }
 

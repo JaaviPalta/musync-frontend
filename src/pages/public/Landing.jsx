@@ -90,8 +90,10 @@ const Landing = () => {
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#por-que">Para quién es</a>
             <Link to={`/artista/${artistProfile.username}`}>Ejemplo</Link>
-            <Link to="/login">Log in</Link>
           </nav>
+          <Link to="/login" className={styles.loginLink}>
+            Log in
+          </Link>
           <Button as={Link} to="/register" variant="outline-primary" size="sm">
             Crear mi página
           </Button>

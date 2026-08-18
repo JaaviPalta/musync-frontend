@@ -96,7 +96,7 @@ const DashboardHome = () => {
                   <span>{quote.createdLabel}</span>
                 </div>
                 <span className={styles.quoteMeta}>
-                  {quote.category}
+                  {quote.subcategory ?? quote.category}
                   {quote.budget ? ` · $${quote.budget.toLocaleString('es-CL')}` : ' · presupuesto abierto'}
                 </span>
               </div>

@@ -45,6 +45,16 @@
   color: var(--musync-accent);
 }
 
+.loginLink {
+  color: var(--musync-text);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.loginLink:hover {
+  color: var(--musync-accent);
+}
+
 .hero {
   padding: 64px 0 96px;
 }
