@@ -1,11 +1,13 @@
-import { useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { quotes as initialQuotes } from '../../mocks/quotes'
+import { toast } from 'sonner'
+import { QuotesContext } from '../../context/QuotesContext'
+import { confirmDialog } from '../../lib/swal'
 import { QUOTE_FILTERS, QUOTE_STATUS_LABELS } from '../../utils/quotes'
 import styles from './Quotes.module.css'
 
 const Quotes = () => {
-  const [quotes, setQuotes] = useState(initialQuotes)
+  const { quotes, setStatus } = useContext(QuotesContext)
   const [filter, setFilter] = useState('all')
 
   const filtered = useMemo(
@@ -13,8 +15,21 @@ const Quotes = () => {
     [quotes, filter],
   )
 
-  const setStatus = (id, status) => {
-    setQuotes((current) => current.map((q) => (q.id === id ? { ...q, status } : q)))
+  const handleAccept = (quote) => {
+    setStatus(quote.id, 'aceptada')
+    toast.success(`Cotización de ${quote.clientName} aceptada`)
+  }
+
+  const handleReject = async (quote) => {
+    const confirmed = await confirmDialog({
+      title: `¿Rechazar la solicitud de ${quote.clientName}?`,
+      text: 'Podrás revisarla igual desde el filtro "Rechazadas".',
+      confirmText: 'Sí, rechazar',
+      danger: true,
+    })
+    if (!confirmed) return
+    setStatus(quote.id, 'rechazada')
+    toast.success('Solicitud rechazada')
   }
 
   return (
@@ -79,7 +94,7 @@ const Quotes = () => {
                 variant="outline-secondary"
                 size="sm"
                 disabled={quote.status === 'aceptada'}
-                onClick={() => setStatus(quote.id, 'aceptada')}
+                onClick={() => handleAccept(quote)}
               >
                 Marcar aceptada
               </Button>
@@ -87,7 +102,7 @@ const Quotes = () => {
                 variant="outline-secondary"
                 size="sm"
                 disabled={quote.status === 'rechazada'}
-                onClick={() => setStatus(quote.id, 'rechazada')}
+                onClick={() => handleReject(quote)}
               >
                 Rechazar
               </Button>

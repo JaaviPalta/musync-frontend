@@ -2,7 +2,9 @@ import { useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Form, Button } from 'react-bootstrap'
+import { toast } from 'sonner'
 import { UserContext } from '../../context/UserContext'
+import { currentUser } from '../../mocks/user'
 import styles from './Auth.module.css'
 
 const Login = () => {
@@ -17,6 +19,7 @@ const Login = () => {
   const onSubmit = () => {
     login()
     navigate('/dashboard')
+    toast.success(`¡Bienvenido de nuevo, ${currentUser.artistProfile.artistName}!`)
   }
 
   return (

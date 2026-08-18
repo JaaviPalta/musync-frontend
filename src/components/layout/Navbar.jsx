@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom'
 import { Navbar as BsNavbar, Container, Nav } from 'react-bootstrap'
 import { Diamond, ShoppingBag } from 'lucide-react'
 import { UserContext } from '../../context/UserContext'
-import { cartItems } from '../../mocks/cart'
+import { CartContext } from '../../context/CartContext'
 import styles from './Navbar.module.css'
 
 const Navbar = () => {
   const { user } = useContext(UserContext)
+  const { items } = useContext(CartContext)
+  const cartCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
     <BsNavbar expand="lg" className={styles.navbar}>
@@ -19,7 +21,7 @@ const Navbar = () => {
         <Nav className="ms-auto align-items-center">
           <Nav.Link as={Link} to="/cart" className={styles.navLink}>
             <ShoppingBag size={18} className="me-1" />
-            Carrito ({cartItems.length})
+            Carrito ({cartCount})
           </Nav.Link>
           {user ? (
             <Nav.Link as={Link} to="/dashboard" className={styles.navLink}>

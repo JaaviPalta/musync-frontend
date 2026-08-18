@@ -1,9 +1,11 @@
+import { useContext } from 'react'
 import { Table } from 'react-bootstrap'
-import { orders } from '../../mocks/orders'
+import { OrdersContext } from '../../context/OrdersContext'
 import { formatPrice } from '../../utils/publications'
 import styles from './Orders.module.css'
 
 const Orders = () => {
+  const { orders } = useContext(OrdersContext)
   const total = orders.reduce((sum, order) => sum + order.total, 0)
 
   return (

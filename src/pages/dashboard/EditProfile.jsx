@@ -1,6 +1,7 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Row, Col, Form, Button } from 'react-bootstrap'
+import { toast } from 'sonner'
 import { UserContext } from '../../context/UserContext'
 import StripePattern from '../../components/ui/StripePattern'
 import styles from './EditProfile.module.css'
@@ -11,7 +12,6 @@ const UNAVAILABLE_LABEL = 'No disponible por ahora'
 const EditProfile = () => {
   const { user, updateProfile } = useContext(UserContext)
   const { artistProfile } = user
-  const [saved, setSaved] = useState(false)
 
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {
@@ -46,7 +46,7 @@ const EditProfile = () => {
       youtubeUrl: data.youtubeUrl,
       instagramUrl: data.instagramUrl,
     })
-    setSaved(true)
+    toast.success('Perfil actualizado')
   }
 
   return (
@@ -135,7 +135,6 @@ const EditProfile = () => {
               <Button type="submit" variant="primary">
                 Guardar cambios
               </Button>
-              {saved ? <span className={styles.savedHint}>Cambios guardados ✓</span> : null}
             </div>
           </Form>
         </Col>

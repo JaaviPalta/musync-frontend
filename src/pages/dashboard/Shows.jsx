@@ -1,25 +1,33 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Row, Col, Form, Button } from 'react-bootstrap'
 import { Trash2 } from 'lucide-react'
-import { upcomingShows as initialUpcoming, pastShows as initialPast } from '../../mocks/shows'
+import { toast } from 'sonner'
+import { ShowsContext } from '../../context/ShowsContext'
+import { confirmDialog } from '../../lib/swal'
 import styles from './Shows.module.css'
 
 const Shows = () => {
-  const [upcoming, setUpcoming] = useState(initialUpcoming)
-  const [past, setPast] = useState(initialPast)
+  const { upcomingShows, pastShows, addUpcomingShow, removeUpcomingShow, removePastShow } =
+    useContext(ShowsContext)
   const { register, handleSubmit, reset } = useForm()
 
   const addShow = (data) => {
-    setUpcoming((current) => [
-      ...current,
-      { id: Date.now(), name: data.name, city: data.city, date: data.date },
-    ])
+    addUpcomingShow({ name: data.name, city: data.city, date: data.date })
     reset()
+    toast.success('Show agregado')
   }
 
-  const removeUpcoming = (id) => setUpcoming((current) => current.filter((s) => s.id !== id))
-  const removePast = (id) => setPast((current) => current.filter((s) => s.id !== id))
+  const handleRemove = async (show, remove) => {
+    const confirmed = await confirmDialog({
+      title: `¿Quitar "${show.name}"?`,
+      confirmText: 'Sí, quitar',
+      danger: true,
+    })
+    if (!confirmed) return
+    remove(show.id)
+    toast.success('Show eliminado')
+  }
 
   return (
     <div>
@@ -32,10 +40,10 @@ const Shows = () => {
         <Col lg={7}>
           <div className={styles.panel}>
             <span className={styles.panelTitle}>Próximos shows</span>
-            {upcoming.length === 0 ? (
+            {upcomingShows.length === 0 ? (
               <p className={styles.emptyState}>No tienes shows agendados.</p>
             ) : (
-              upcoming.map((show) => (
+              upcomingShows.map((show) => (
                 <div key={show.id} className={styles.item}>
                   <div>
                     <strong>{show.name}</strong>
@@ -51,7 +59,7 @@ const Shows = () => {
                   <button
                     type="button"
                     aria-label={`Quitar ${show.name}`}
-                    onClick={() => removeUpcoming(show.id)}
+                    onClick={() => handleRemove(show, removeUpcomingShow)}
                   >
                     <Trash2 size={16} />
                   </button>
@@ -86,10 +94,10 @@ const Shows = () => {
         <Col lg={5}>
           <div className={styles.panel}>
             <span className={styles.panelTitle}>Shows anteriores</span>
-            {past.length === 0 ? (
+            {pastShows.length === 0 ? (
               <p className={styles.emptyState}>Sin trayectoria cargada todavía.</p>
             ) : (
-              past.map((show) => (
+              pastShows.map((show) => (
                 <div key={show.id} className={styles.item}>
                   <span>
                     {show.name} · {show.dateLabel}
@@ -97,7 +105,7 @@ const Shows = () => {
                   <button
                     type="button"
                     aria-label={`Quitar ${show.name}`}
-                    onClick={() => removePast(show.id)}
+                    onClick={() => handleRemove(show, removePastShow)}
                   >
                     <Trash2 size={16} />
                   </button>

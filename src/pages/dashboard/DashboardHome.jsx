@@ -2,22 +2,28 @@ import { useContext, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Button } from 'react-bootstrap'
 import { UserContext } from '../../context/UserContext'
+import { PublicationsContext } from '../../context/PublicationsContext'
+import { QuotesContext } from '../../context/QuotesContext'
+import { OrdersContext } from '../../context/OrdersContext'
 import StripePattern from '../../components/ui/StripePattern'
-import { publications } from '../../mocks/publications'
-import { quotes } from '../../mocks/quotes'
-import { orders } from '../../mocks/orders'
 import { PUBLICATION_TYPE_LABELS, priceLabel } from '../../utils/publications'
 import styles from './DashboardHome.module.css'
 
 const DashboardHome = () => {
   const { user } = useContext(UserContext)
+  const { publications } = useContext(PublicationsContext)
+  const { quotes } = useContext(QuotesContext)
+  const { orders } = useContext(OrdersContext)
   const { artistProfile } = user
 
   const activeCount = useMemo(
     () => publications.filter((p) => p.status === 'publicada').length,
-    [],
+    [publications],
   )
-  const pendingQuotes = useMemo(() => quotes.filter((q) => q.status === 'nueva').length, [])
+  const pendingQuotes = useMemo(
+    () => quotes.filter((q) => q.status === 'nueva').length,
+    [quotes],
+  )
   const latestPublications = publications.slice(0, 4)
   const newestQuotes = quotes.slice(0, 3)
 

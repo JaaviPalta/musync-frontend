@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Form, Table } from 'react-bootstrap'
 import { Eye, Pencil, Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
 import StripePattern from '../../components/ui/StripePattern'
-import { publications as initialPublications } from '../../mocks/publications'
+import { PublicationsContext } from '../../context/PublicationsContext'
+import { confirmDialog } from '../../lib/swal'
 import {
   DASHBOARD_PUBLICATION_FILTERS,
   PUBLICATION_STATUS_LABELS,
@@ -13,7 +15,7 @@ import {
 import styles from './MyPublications.module.css'
 
 const MyPublications = () => {
-  const [publications, setPublications] = useState(initialPublications)
+  const { publications, removePublication } = useContext(PublicationsContext)
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
 
@@ -25,8 +27,16 @@ const MyPublications = () => {
     [publications, filter, search],
   )
 
-  const removePublication = (id) => {
-    setPublications((current) => current.filter((p) => p.id !== id))
+  const handleDelete = async (pub) => {
+    const confirmed = await confirmDialog({
+      title: `¿Eliminar "${pub.title}"?`,
+      text: 'Esta acción no se puede deshacer.',
+      confirmText: 'Sí, eliminar',
+      danger: true,
+    })
+    if (!confirmed) return
+    removePublication(pub.id)
+    toast.success('Publicación eliminada')
   }
 
   return (
@@ -108,7 +118,7 @@ const MyPublications = () => {
                     <button
                       type="button"
                       aria-label={`Eliminar ${pub.title}`}
-                      onClick={() => removePublication(pub.id)}
+                      onClick={() => handleDelete(pub)}
                     >
                       <Trash2 size={16} />
                     </button>

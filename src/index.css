@@ -81,3 +81,10 @@ body {
   border-color: var(--musync-accent);
   box-shadow: 0 0 0 0.2rem rgba(var(--musync-accent-rgb), 0.25);
 }
+
+.swal-cancel-outline {
+  background: transparent !important;
+  border: 1px solid var(--musync-border) !important;
+  color: var(--musync-text) !important;
+  box-shadow: none !important;
+}

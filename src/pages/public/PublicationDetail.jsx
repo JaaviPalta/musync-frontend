@@ -1,8 +1,11 @@
-import { useParams, Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
+import { toast } from 'sonner'
 import StripePattern from '../../components/ui/StripePattern'
 import { currentUser } from '../../mocks/user'
-import { publications } from '../../mocks/publications'
+import { PublicationsContext } from '../../context/PublicationsContext'
+import { CartContext } from '../../context/CartContext'
 import { PUBLICATION_TYPE_LABELS, priceLabel } from '../../utils/publications'
 import styles from './PublicationDetail.module.css'
 
@@ -15,7 +18,10 @@ const specRows = (publication) =>
 
 const PublicationDetail = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { artistProfile } = currentUser
+  const { publications } = useContext(PublicationsContext)
+  const { addItem } = useContext(CartContext)
   const publication = publications.find((p) => String(p.id) === id)
 
   if (!publication) {
@@ -31,6 +37,16 @@ const PublicationDetail = () => {
 
   const rows = specRows(publication)
   const isPurchasable = publication.type === 'music' || publication.type === 'digital_product'
+
+  const handleAddToCart = () => {
+    addItem({ ...publication, artistName: artistProfile.artistName })
+    toast.success(`${publication.title} agregado al carrito`)
+  }
+
+  const handleBuyNow = () => {
+    addItem({ ...publication, artistName: artistProfile.artistName })
+    navigate('/cart')
+  }
 
   return (
     <Container className={styles.page}>
@@ -67,8 +83,12 @@ const PublicationDetail = () => {
           <div className={styles.actions}>
             {isPurchasable ? (
               <>
-                <Button variant="outline-primary">Agregar al carrito</Button>
-                <Button variant="outline-secondary">Comprar ahora</Button>
+                <Button variant="outline-primary" onClick={handleAddToCart}>
+                  Agregar al carrito
+                </Button>
+                <Button variant="outline-secondary" onClick={handleBuyNow}>
+                  Comprar ahora
+                </Button>
               </>
             ) : null}
             {publication.type === 'service' ? (

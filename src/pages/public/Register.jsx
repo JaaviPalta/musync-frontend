@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Form, Button } from 'react-bootstrap'
+import { toast } from 'sonner'
 import { UserContext } from '../../context/UserContext'
 import styles from './Auth.module.css'
 
@@ -15,9 +16,10 @@ const Register = () => {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
     login()
     navigate('/dashboard')
+    toast.success(`¡Cuenta creada! Bienvenido/a, ${data.artistName}.`)
   }
 
   return (

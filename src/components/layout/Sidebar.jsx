@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { Nav } from 'react-bootstrap'
 import { Diamond } from 'lucide-react'
+import { toast } from 'sonner'
 import { UserContext } from '../../context/UserContext'
 import styles from './Sidebar.module.css'
 
@@ -20,6 +21,7 @@ const Sidebar = () => {
   const handleLogout = () => {
     logout()
     navigate('/login')
+    toast.success('Sesión cerrada')
   }
 
   return (

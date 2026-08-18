@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Form, Button } from 'react-bootstrap'
+import { toast } from 'sonner'
 import StripePattern from '../../components/ui/StripePattern'
 import { currentUser } from '../../mocks/user'
-import { publications } from '../../mocks/publications'
+import { PublicationsContext } from '../../context/PublicationsContext'
+import { QuotesContext } from '../../context/QuotesContext'
 import styles from './RequestQuote.module.css'
 
 const requestTypes = ['Servicio musical', 'Evento / Show', 'Colaboración', 'Otro']
@@ -12,6 +14,8 @@ const requestTypes = ['Servicio musical', 'Evento / Show', 'Colaboración', 'Otr
 const RequestQuote = () => {
   const { id } = useParams()
   const { artistProfile } = currentUser
+  const { publications } = useContext(PublicationsContext)
+  const { addQuote } = useContext(QuotesContext)
   const publication = id ? publications.find((p) => String(p.id) === id) : null
 
   const [requestType, setRequestType] = useState(requestTypes[0])
@@ -22,7 +26,19 @@ const RequestQuote = () => {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = () => setSubmitted(true)
+  const onSubmit = (data) => {
+    addQuote({
+      publicationId: publication?.id ?? null,
+      clientName: data.clientName,
+      clientEmail: data.clientEmail,
+      budget: data.budget ? Number(data.budget.replace(/\D/g, '')) || null : null,
+      category: requestType,
+      subcategory: publication?.title ?? null,
+      message: data.message,
+    })
+    setSubmitted(true)
+    toast.success('Solicitud enviada')
+  }
 
   return (
     <div className={styles.page}>

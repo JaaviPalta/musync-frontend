@@ -1,12 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Container, Row, Col, Button, Badge } from 'react-bootstrap'
 import { Music2, Video, Camera } from 'lucide-react'
 import StripePattern from '../../components/ui/StripePattern'
 import PublicationCard from '../../components/publication/PublicationCard'
 import { currentUser } from '../../mocks/user'
-import { publications } from '../../mocks/publications'
-import { upcomingShows, pastShows } from '../../mocks/shows'
+import { PublicationsContext } from '../../context/PublicationsContext'
+import { ShowsContext } from '../../context/ShowsContext'
 import { PROFILE_FILTERS } from '../../utils/publications'
 import styles from './PublicProfile.module.css'
 
@@ -20,13 +20,15 @@ const socialLinks = (profile) =>
 const PublicProfile = () => {
   const { username } = useParams()
   const [filter, setFilter] = useState('all')
+  const { publications } = useContext(PublicationsContext)
+  const { upcomingShows, pastShows } = useContext(ShowsContext)
 
   const { artistProfile } = currentUser
   const isKnownArtist = username === artistProfile.username
 
   const publishedPublications = useMemo(
     () => publications.filter((p) => p.status === 'publicada'),
-    [],
+    [publications],
   )
   const firstService = publishedPublications.find((p) => p.type === 'service')
 

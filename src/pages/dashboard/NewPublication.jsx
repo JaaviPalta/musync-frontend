@@ -1,14 +1,16 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Row, Col, Form, Button } from 'react-bootstrap'
+import { toast } from 'sonner'
 import StripePattern from '../../components/ui/StripePattern'
-import { publications } from '../../mocks/publications'
+import { PublicationsContext } from '../../context/PublicationsContext'
 import { PUBLICATION_TYPE_OPTIONS, priceLabel, PUBLICATION_TYPE_LABELS } from '../../utils/publications'
 import styles from './NewPublication.module.css'
 
 const NewPublication = () => {
   const { id } = useParams()
+  const { publications, addPublication, updatePublication } = useContext(PublicationsContext)
   const existing = id ? publications.find((p) => String(p.id) === id) : null
   const isEdit = Boolean(existing)
 
@@ -26,7 +28,29 @@ const NewPublication = () => {
 
   const preview = watch()
 
-  const onSubmit = () => setDone(isEdit ? 'edit' : 'create')
+  const onSubmit = (data, status) => {
+    const patch = {
+      type,
+      title: data.title,
+      description: data.description,
+      price: data.price ? Number(data.price) : null,
+      externalUrl: data.externalUrl || null,
+      status,
+    }
+    if (isEdit) {
+      updatePublication(existing.id, patch)
+    } else {
+      addPublication(patch)
+    }
+    setDone(isEdit ? 'edit' : 'create')
+    toast.success(
+      status === 'borrador'
+        ? 'Borrador guardado'
+        : isEdit
+          ? 'Cambios guardados'
+          : 'Publicación creada',
+    )
+  }
 
   return (
     <div>
@@ -53,7 +77,7 @@ const NewPublication = () => {
                 <Link to="/dashboard/publications">Volver a Mis publicaciones</Link>
               </div>
             ) : (
-              <Form onSubmit={handleSubmit(onSubmit)}>
+              <Form onSubmit={(e) => e.preventDefault()}>
                 <Form.Label className={styles.fieldLabel}>Tipo de publicación</Form.Label>
                 <Row className="g-2 mb-3">
                   {PUBLICATION_TYPE_OPTIONS.map((option) => (
@@ -114,10 +138,18 @@ const NewPublication = () => {
                 </Form.Group>
 
                 <div className={styles.submitRow}>
-                  <Button type="submit" variant="outline-primary">
+                  <Button
+                    type="button"
+                    variant="outline-primary"
+                    onClick={handleSubmit((data) => onSubmit(data, 'publicada'))}
+                  >
                     {isEdit ? 'Guardar cambios' : 'Publicar'}
                   </Button>
-                  <Button type="button" variant="outline-secondary">
+                  <Button
+                    type="button"
+                    variant="outline-secondary"
+                    onClick={handleSubmit((data) => onSubmit(data, 'borrador'))}
+                  >
                     Guardar borrador
                   </Button>
                 </div>

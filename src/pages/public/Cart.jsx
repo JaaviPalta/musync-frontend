@@ -1,30 +1,41 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Minus, Plus, Trash2 } from 'lucide-react'
 import StripePattern from '../../components/ui/StripePattern'
-import { cartItems as initialCartItems } from '../../mocks/cart'
 import { currentUser } from '../../mocks/user'
+import { CartContext } from '../../context/CartContext'
+import { OrdersContext } from '../../context/OrdersContext'
 import { formatPrice } from '../../utils/publications'
+import { successDialog } from '../../lib/swal'
 import styles from './Cart.module.css'
 
 const Cart = () => {
-  const [items, setItems] = useState(initialCartItems)
+  const { items, updateQuantity, removeItem, clearCart } = useContext(CartContext)
+  const { addOrder } = useContext(OrdersContext)
   const { artistProfile } = currentUser
-
-  const updateQuantity = (id, delta) => {
-    setItems((current) =>
-      current.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item,
-      ),
-    )
-  }
-
-  const removeItem = (id) => {
-    setItems((current) => current.filter((item) => item.id !== id))
-  }
+  const navigate = useNavigate()
 
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+
+  const handleCheckout = async () => {
+    const order = addOrder({
+      buyerName: 'Visitante MUSYNC',
+      total,
+      items: items.map((item) => ({
+        publicationId: item.publicationId,
+        title: item.title,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+    })
+    clearCart()
+    await successDialog({
+      title: '¡Compra realizada!',
+      text: `Se creó tu orden #${order.id} por ${formatPrice(total)}. En el MVP no hay pasarela de pago real.`,
+    })
+    navigate(`/artista/${artistProfile.username}`)
+  }
 
   return (
     <Container className={styles.page}>
@@ -99,7 +110,7 @@ const Cart = () => {
                 <span>Total</span>
                 <strong>{formatPrice(total)}</strong>
               </div>
-              <Button variant="outline-primary" className={styles.checkoutBtn}>
+              <Button variant="outline-primary" className={styles.checkoutBtn} onClick={handleCheckout}>
                 Finalizar compra
               </Button>
               <p className={styles.summaryHint}>
