@@ -60,6 +60,13 @@ body {
   --bs-btn-active-color: var(--musync-bg);
 }
 
+.table {
+  --bs-table-color: var(--musync-text);
+  --bs-table-striped-color: var(--musync-text);
+  --bs-table-active-color: var(--musync-text);
+  --bs-table-hover-color: var(--musync-text);
+}
+
 .table-dark {
   --bs-table-bg: var(--musync-surface);
 }
