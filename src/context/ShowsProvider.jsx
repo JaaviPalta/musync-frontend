@@ -1,17 +1,34 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ShowsContext } from './ShowsContext'
-import { upcomingShows as initialUpcoming, pastShows as initialPast } from '../mocks/shows'
+import { api } from '../lib/api'
 
 const ShowsProvider = ({ children }) => {
-  const [upcomingShows, setUpcomingShows] = useState(initialUpcoming)
-  const [pastShows, setPastShows] = useState(initialPast)
+  const [upcomingShows, setUpcomingShows] = useState([])
+  const [pastShows, setPastShows] = useState([])
 
-  const addUpcomingShow = (data) => {
-    setUpcomingShows((current) => [...current, { id: Date.now(), artistId: 1, ...data }])
+  useEffect(() => {
+    if (!localStorage.getItem('musync_token')) return
+    api.getShows().then((shows) => {
+      const now = new Date()
+      setUpcomingShows(shows.filter((show) => new Date(show.showDate) >= now).map((show) => ({ ...show, date: show.showDate })))
+      setPastShows(shows.filter((show) => new Date(show.showDate) < now).map((show) => ({
+        ...show,
+        dateLabel: new Date(show.showDate).toLocaleDateString('es-CL'),
+      })))
+    }).catch(() => {})
+  }, [])
+
+  const addUpcomingShow = async (data) => {
+    const show = await api.createShow({
+      ...data,
+      showDate: new Date(`${data.date}T00:00:00.000Z`).toISOString(),
+    })
+    setUpcomingShows((current) => [...current, show])
+    return show
   }
 
   const removeUpcomingShow = (id) => {
-    setUpcomingShows((current) => current.filter((show) => show.id !== id))
+    api.deleteShow(id).then(() => setUpcomingShows((current) => current.filter((show) => show.id !== id)))
   }
 
   const removePastShow = (id) => {

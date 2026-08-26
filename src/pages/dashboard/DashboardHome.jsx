@@ -17,7 +17,7 @@ const DashboardHome = () => {
   const { artistProfile } = user
 
   const activeCount = useMemo(
-    () => publications.filter((p) => p.status === 'publicada').length,
+    () => publications.filter((p) => p.isActive !== false && p.status !== 'borrador').length,
     [publications],
   )
   const pendingQuotes = useMemo(

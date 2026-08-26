@@ -7,7 +7,7 @@ import { UserContext } from '../../context/UserContext'
 import styles from './Auth.module.css'
 
 const Register = () => {
-  const { login } = useContext(UserContext)
+  const { register: createAccount } = useContext(UserContext)
   const navigate = useNavigate()
   const {
     register,
@@ -16,8 +16,14 @@ const Register = () => {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data) => {
-    login()
+  const onSubmit = async (data) => {
+    await createAccount({
+      name: data.artistName,
+      artistName: data.artistName,
+      username: data.artistName.toLowerCase().replace(/[^a-z0-9_-]/g, '-'),
+      email: data.email,
+      password: data.password,
+    })
     navigate('/dashboard')
     toast.success(`¡Cuenta creada! Bienvenido/a, ${data.artistName}.`)
   }

@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { CartContext } from './CartContext'
-import { cartItems as initialCartItems } from '../mocks/cart'
 
 const CartProvider = ({ children }) => {
-  const [items, setItems] = useState(initialCartItems)
+  const [items, setItems] = useState([])
 
   const addItem = (publication) => {
     setItems((current) => {

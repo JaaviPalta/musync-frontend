@@ -28,7 +28,7 @@ const NewPublication = () => {
 
   const preview = watch()
 
-  const onSubmit = (data, status) => {
+  const onSubmit = async (data, status) => {
     const patch = {
       type,
       title: data.title,
@@ -37,19 +37,23 @@ const NewPublication = () => {
       externalUrl: data.externalUrl || null,
       status,
     }
-    if (isEdit) {
-      updatePublication(existing.id, patch)
-    } else {
-      addPublication(patch)
+    try {
+      if (isEdit) {
+        await updatePublication(existing.id, patch)
+      } else {
+        await addPublication(patch)
+      }
+      setDone(isEdit ? 'edit' : 'create')
+      toast.success(
+        status === 'borrador'
+          ? 'Borrador guardado'
+          : isEdit
+            ? 'Cambios guardados'
+            : 'Publicación creada',
+      )
+    } catch (error) {
+      toast.error(error.message || 'No se pudo guardar la publicación')
     }
-    setDone(isEdit ? 'edit' : 'create')
-    toast.success(
-      status === 'borrador'
-        ? 'Borrador guardado'
-        : isEdit
-          ? 'Cambios guardados'
-          : 'Publicación creada',
-    )
   }
 
   return (

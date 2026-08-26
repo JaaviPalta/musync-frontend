@@ -1,12 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { OrdersContext } from './OrdersContext'
-import { orders as initialOrders } from '../mocks/orders'
+import { api } from '../lib/api'
 
 const OrdersProvider = ({ children }) => {
-  const [orders, setOrders] = useState(initialOrders)
+  const [orders, setOrders] = useState([])
 
-  const addOrder = (data) => {
-    const order = { id: Date.now(), status: 'pagada', createdAt: new Date().toISOString(), ...data }
+  useEffect(() => {
+    if (localStorage.getItem('musync_token')) api.getOrders().then(setOrders).catch(() => {})
+  }, [])
+
+  const addOrder = async (data) => {
+    const order = await api.createOrder(data)
     setOrders((current) => [order, ...current])
     return order
   }

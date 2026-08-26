@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Minus, Plus, Trash2 } from 'lucide-react'
 import StripePattern from '../../components/ui/StripePattern'
-import { currentUser } from '../../mocks/user'
 import { CartContext } from '../../context/CartContext'
 import { OrdersContext } from '../../context/OrdersContext'
+import { UserContext } from '../../context/UserContext'
 import { formatPrice } from '../../utils/publications'
 import { successDialog } from '../../lib/swal'
 import styles from './Cart.module.css'
@@ -13,20 +13,19 @@ import styles from './Cart.module.css'
 const Cart = () => {
   const { items, updateQuantity, removeItem, clearCart } = useContext(CartContext)
   const { addOrder } = useContext(OrdersContext)
-  const { artistProfile } = currentUser
+  const { user } = useContext(UserContext)
+  const artistProfile = user?.artistProfile ?? { username: 'demo', artistName: 'el artista' }
   const navigate = useNavigate()
 
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
   const handleCheckout = async () => {
-    const order = addOrder({
+    const order = await addOrder({
       buyerName: 'Visitante MUSYNC',
-      total,
+      buyerEmail: user?.email || 'visitante@musync.com',
       items: items.map((item) => ({
         publicationId: item.publicationId,
-        title: item.title,
         quantity: item.quantity,
-        price: item.price,
       })),
     })
     clearCart()
@@ -34,7 +33,7 @@ const Cart = () => {
       title: '¡Compra realizada!',
       text: `Se creó tu orden #${order.id} por ${formatPrice(total)}. En el MVP no hay pasarela de pago real.`,
     })
-    navigate(`/artista/${artistProfile.username}`)
+    navigate(artistProfile ? `/artista/${artistProfile.username}` : '/')
   }
 
   return (

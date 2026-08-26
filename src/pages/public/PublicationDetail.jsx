@@ -1,11 +1,11 @@
-import { useContext } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useContext, useEffect, useState } from 'react'
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { toast } from 'sonner'
 import StripePattern from '../../components/ui/StripePattern'
-import { currentUser } from '../../mocks/user'
-import { PublicationsContext } from '../../context/PublicationsContext'
+import { UserContext } from '../../context/UserContext'
 import { CartContext } from '../../context/CartContext'
+import { api } from '../../lib/api'
 import { PUBLICATION_TYPE_LABELS, priceLabel } from '../../utils/publications'
 import styles from './PublicationDetail.module.css'
 
@@ -19,12 +19,33 @@ const specRows = (publication) =>
 const PublicationDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { artistProfile } = currentUser
-  const { publications } = useContext(PublicationsContext)
+  const location = useLocation()
+  const { user } = useContext(UserContext)
   const { addItem } = useContext(CartContext)
-  const publication = publications.find((p) => String(p.id) === id)
+  const [detail, setDetail] = useState({ id: null, publication: null, notFound: false })
 
-  if (!publication) {
+  useEffect(() => {
+    api
+      .getPublication(id)
+      .then((result) =>
+        setDetail({ id, publication: result ?? null, notFound: !result }),
+      )
+      .catch(() => setDetail({ id, publication: null, notFound: true }))
+  }, [id])
+
+  const publication = detail.id === id ? detail.publication : null
+  const notFound = detail.id === id && detail.notFound
+  const artistProfile =
+    publication?.artistProfile ??
+    location.state?.artistProfile ??
+    user?.artistProfile ??
+    { username: 'demo', artistName: 'el artista' }
+
+  if (!publication && !notFound) {
+    return <Container className={styles.notFound}>Cargando publicación...</Container>
+  }
+
+  if (notFound) {
     return (
       <Container className={styles.notFound}>
         <h1>Publicación no encontrada</h1>

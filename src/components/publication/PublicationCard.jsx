@@ -3,8 +3,12 @@ import StripePattern from '../ui/StripePattern'
 import { PUBLICATION_TYPE_LABELS, priceLabel } from '../../utils/publications'
 import styles from './PublicationCard.module.css'
 
-const PublicationCard = ({ publication }) => (
-  <Link to={`/publication/${publication.id}`} className={styles.card}>
+const PublicationCard = ({ publication, artistProfile }) => (
+  <Link
+    to={`/publication/${publication.id}`}
+    state={{ artistProfile }}
+    className={styles.card}
+  >
     <StripePattern
       tone={publication.type === 'music' ? 'accent' : 'neutral'}
       className={styles.thumb}

@@ -1,9 +1,9 @@
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Diamond } from 'lucide-react'
 import StripePattern from '../../components/ui/StripePattern'
-import { currentUser } from '../../mocks/user'
-import { publications } from '../../mocks/publications'
+import { PublicationsContext } from '../../context/PublicationsContext'
 import { priceLabel } from '../../utils/publications'
 import styles from './Landing.module.css'
 
@@ -71,12 +71,16 @@ const reasons = [
   },
 ]
 
-const previewPublications = ['music', 'digital_product', 'service', 'portfolio'].map((type) =>
-  publications.find((p) => p.type === type),
-)
-
 const Landing = () => {
-  const { artistProfile } = currentUser
+  const { publications } = useContext(PublicationsContext)
+  const artistProfile = {
+    username: 'demo',
+    artistName: 'Tu proyecto musical',
+    roleLine: 'Artista independiente',
+  }
+  const previewPublications = ['music', 'digital_product', 'service', 'portfolio'].map((type) =>
+    publications.find((p) => p.type === type),
+  ).filter(Boolean)
 
   return (
     <div className={styles.page}>
@@ -89,7 +93,7 @@ const Landing = () => {
           <nav className={styles.nav}>
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#por-que">Para quién es</a>
-            <Link to={`/artista/${artistProfile.username}`}>Ejemplo</Link>
+            <Link to="/artista/demo">Ejemplo</Link>
           </nav>
           <Link to="/login" className={styles.loginLink}>
             Log in

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Form, Button } from 'react-bootstrap'
 import { toast } from 'sonner'
 import StripePattern from '../../components/ui/StripePattern'
-import { currentUser } from '../../mocks/user'
+import { UserContext } from '../../context/UserContext'
 import { PublicationsContext } from '../../context/PublicationsContext'
 import { QuotesContext } from '../../context/QuotesContext'
 import styles from './RequestQuote.module.css'
@@ -13,7 +13,8 @@ const requestTypes = ['Servicio musical', 'Evento / Show', 'Colaboración', 'Otr
 
 const RequestQuote = () => {
   const { id } = useParams()
-  const { artistProfile } = currentUser
+  const { user } = useContext(UserContext)
+  const artistProfile = user?.artistProfile ?? { username: 'demo', artistName: 'el artista' }
   const { publications } = useContext(PublicationsContext)
   const { addQuote } = useContext(QuotesContext)
   const publication = id ? publications.find((p) => String(p.id) === id) : null

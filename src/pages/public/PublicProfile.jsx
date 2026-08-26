@@ -1,33 +1,50 @@
-import { useContext, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Container, Row, Col, Button, Badge } from 'react-bootstrap'
 import { Music2, Video, Camera } from 'lucide-react'
 import StripePattern from '../../components/ui/StripePattern'
 import PublicationCard from '../../components/publication/PublicationCard'
-import { currentUser } from '../../mocks/user'
-import { PublicationsContext } from '../../context/PublicationsContext'
-import { ShowsContext } from '../../context/ShowsContext'
+import { api } from '../../lib/api'
 import { PROFILE_FILTERS } from '../../utils/publications'
 import styles from './PublicProfile.module.css'
 
 const socialLinks = (profile) =>
   [
-    { key: 'spotify', label: 'Spotify', url: profile.spotifyUrl, Icon: Music2 },
-    { key: 'youtube', label: 'YouTube', url: profile.youtubeUrl, Icon: Video },
-    { key: 'instagram', label: 'Instagram', url: profile.instagramUrl, Icon: Camera },
+    { key: 'spotify', label: 'Spotify', url: profile?.spotifyUrl, Icon: Music2 },
+    { key: 'youtube', label: 'YouTube', url: profile?.youtubeUrl, Icon: Video },
+    { key: 'instagram', label: 'Instagram', url: profile?.instagramUrl, Icon: Camera },
   ].filter((link) => link.url)
 
 const PublicProfile = () => {
   const { username } = useParams()
   const [filter, setFilter] = useState('all')
-  const { publications } = useContext(PublicationsContext)
-  const { upcomingShows, pastShows } = useContext(ShowsContext)
+  const [artistProfile, setArtistProfile] = useState(null)
+  const [notFound, setNotFound] = useState(false)
 
-  const { artistProfile } = currentUser
-  const isKnownArtist = username === artistProfile.username
+  useEffect(() => {
+    api
+      .getProfile(username)
+      .then((profile) => {
+        if (profile) {
+          setArtistProfile(profile)
+        } else {
+          setNotFound(true)
+        }
+      })
+      .catch(() => setNotFound(true))
+  }, [username])
+
+  const publications = artistProfile?.publications ?? []
+  const shows = artistProfile?.shows ?? []
+  const upcomingShows = shows
+    .filter((show) => new Date(show.showDate) >= new Date())
+    .map((show) => ({ ...show, date: show.showDate }))
+  const pastShows = shows
+    .filter((show) => new Date(show.showDate) < new Date())
+    .map((show) => ({ ...show, dateLabel: new Date(show.showDate).toLocaleDateString('es-CL') }))
 
   const publishedPublications = useMemo(
-    () => publications.filter((p) => p.status === 'publicada'),
+    () => publications.filter((p) => p.isActive !== false),
     [publications],
   )
   const firstService = publishedPublications.find((p) => p.type === 'service')
@@ -42,7 +59,11 @@ const PublicProfile = () => {
 
   const links = socialLinks(artistProfile)
 
-  if (!isKnownArtist) {
+  if (!artistProfile && !notFound) {
+    return <Container className={styles.notFound}>Cargando perfil...</Container>
+  }
+
+  if (notFound) {
     return (
       <Container className={styles.notFound}>
         <h1>Artista no encontrado</h1>
@@ -92,7 +113,7 @@ const PublicProfile = () => {
         <p className={styles.bio}>{artistProfile.bio}</p>
 
         <div className={styles.tags}>
-          {artistProfile.tags.map((tag) => (
+          {(artistProfile.tags ?? []).map((tag) => (
             <span key={tag} className={styles.tag}>
               {tag}
             </span>
@@ -120,7 +141,7 @@ const PublicProfile = () => {
               <Row className="g-4">
                 {filteredPublications.map((pub) => (
                   <Col key={pub.id} sm={6} lg={4}>
-                    <PublicationCard publication={pub} />
+                    <PublicationCard publication={pub} artistProfile={artistProfile} />
                   </Col>
                 ))}
               </Row>

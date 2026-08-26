@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { Form, Button } from 'react-bootstrap'
 import { toast } from 'sonner'
 import { UserContext } from '../../context/UserContext'
-import { currentUser } from '../../mocks/user'
 import styles from './Auth.module.css'
 
 const Login = () => {
@@ -16,10 +15,10 @@ const Login = () => {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = () => {
-    login()
+  const onSubmit = async (data) => {
+    await login(data)
     navigate('/dashboard')
-    toast.success(`¡Bienvenido de nuevo, ${currentUser.artistProfile.artistName}!`)
+    toast.success('¡Bienvenido de nuevo!')
   }
 
   return (
