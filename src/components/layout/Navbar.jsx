@@ -19,14 +19,16 @@ const Navbar = () => {
           MUSYNC
         </BsNavbar.Brand>
         <Nav className="ms-auto align-items-center">
-          <Nav.Link as={Link} to="/cart" className={styles.navLink}>
-            <ShoppingBag size={18} className="me-1" />
-            Carrito ({cartCount})
-          </Nav.Link>
           {user ? (
-            <Nav.Link as={Link} to="/dashboard" className={styles.navLink}>
-              {user.artistProfile.artistName}
-            </Nav.Link>
+            <>
+              <Nav.Link as={Link} to="/cart" className={styles.navLink}>
+                <ShoppingBag size={18} className="me-1" />
+                Carrito ({cartCount})
+              </Nav.Link>
+              <Nav.Link as={Link} to="/dashboard" className={styles.navLink}>
+                {user.artistProfile.artistName}
+              </Nav.Link>
+            </>
           ) : (
             <Nav.Link as={Link} to="/login" className={styles.navLink}>
               Log in

@@ -33,12 +33,12 @@ const AppRouter = () => {
         <Route path="/publication/:id" element={<PublicationDetail />} />
         <Route path="/publication/:id/cotizar" element={<RequestQuote />} />
         <Route path="/cotizar" element={<RequestQuote />} />
-        <Route path="/cart" element={<Cart />} />
       </Route>
 
       {/* Rutas privadas: requieren sesión y usan el sidebar */}
       <Route element={<ProtectedRoute />}>
         <Route element={<DashboardLayout />}>
+          <Route path="/cart" element={<Cart />} />
           <Route path="/dashboard" element={<DashboardHome />} />
           <Route path="/dashboard/profile" element={<EditProfile />} />
           <Route path="/dashboard/publications" element={<MyPublications />} />

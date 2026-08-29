@@ -15,10 +15,32 @@ const Login = () => {
     formState: { errors },
   } = useForm()
 
+  const getLoginErrorMessage = (error) => {
+    const message = error?.message?.toLowerCase() || ''
+
+    if (message.includes('email') || message.includes('usuario')) {
+      return 'No encontramos una cuenta con ese email.'
+    }
+
+    if (message.includes('password') || message.includes('contraseña')) {
+      return 'La contraseña es incorrecta. Verifícala e inténtalo otra vez.'
+    }
+
+    if (message.includes('fetch') || message.includes('network') || message.includes('failed to fetch')) {
+      return 'No pudimos conectar con el servidor. Inténtalo más tarde.'
+    }
+
+    return 'Credenciales incorrectas. Verifica tu email y contraseña.'
+  }
+
   const onSubmit = async (data) => {
-    await login(data)
-    navigate('/dashboard')
-    toast.success('¡Bienvenido de nuevo!')
+    try {
+      await login(data)
+      navigate('/dashboard')
+      toast.success('¡Bienvenido de nuevo!')
+    } catch (error) {
+      toast.error(getLoginErrorMessage(error))
+    }
   }
 
   return (
