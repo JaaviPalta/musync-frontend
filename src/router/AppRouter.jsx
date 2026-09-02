@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute'
 import PublicLayout from '../components/layout/PublicLayout'
 import DashboardLayout from '../components/layout/DashboardLayout'
@@ -10,6 +10,7 @@ import PublicProfile from '../pages/public/PublicProfile'
 import PublicationDetail from '../pages/public/PublicationDetail'
 import RequestQuote from '../pages/public/RequestQuote'
 import Cart from '../pages/public/Cart'
+import NotFound from '../pages/public/NotFound'
 
 import DashboardHome from '../pages/dashboard/DashboardHome'
 import EditProfile from '../pages/dashboard/EditProfile'
@@ -33,6 +34,7 @@ const AppRouter = () => {
         <Route path="/publication/:id" element={<PublicationDetail />} />
         <Route path="/publication/:id/cotizar" element={<RequestQuote />} />
         <Route path="/cotizar" element={<RequestQuote />} />
+        <Route path="/404" element={<NotFound />} />
       </Route>
 
       {/* Rutas privadas: requieren sesión y usan el sidebar */}
@@ -49,6 +51,9 @@ const AppRouter = () => {
           <Route path="/dashboard/orders" element={<Orders />} />
         </Route>
       </Route>
+
+      {/* Cualquier ruta no definida arriba redirige a la 404 */}
+      <Route path="*" element={<Navigate to="/404" replace />} />
     </Routes>
   )
 }

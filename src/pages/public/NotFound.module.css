@@ -1,0 +1,12 @@
+.notFound {
+  padding: 96px 0;
+  text-align: center;
+}
+
+.code {
+  display: block;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--bs-primary);
+  margin-bottom: 8px;
+}
