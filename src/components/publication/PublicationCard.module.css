@@ -14,6 +14,7 @@
   aspect-ratio: 1 / 1;
   width: 100%;
   margin-bottom: 8px;
+  object-fit: cover;
 }
 
 .badge {

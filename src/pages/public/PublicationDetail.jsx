@@ -77,10 +77,14 @@ const PublicationDetail = () => {
 
       <Row className="g-5 mt-1">
         <Col lg={6}>
-          <StripePattern
-            tone={publication.type === 'music' ? 'accent' : 'neutral'}
-            className={styles.image}
-          />
+          {publication.imageUrl ? (
+            <img src={publication.imageUrl} alt={publication.title} className={styles.image} />
+          ) : (
+            <StripePattern
+              tone={publication.type === 'music' ? 'accent' : 'neutral'}
+              className={styles.image}
+            />
+          )}
         </Col>
 
         <Col lg={6}>

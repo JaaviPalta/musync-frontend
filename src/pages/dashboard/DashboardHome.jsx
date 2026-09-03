@@ -67,10 +67,14 @@ const DashboardHome = () => {
             </div>
             {latestPublications.map((pub) => (
               <div key={pub.id} className={styles.listItem}>
-                <StripePattern
-                  tone={pub.type === 'music' ? 'accent' : 'neutral'}
-                  className={styles.listThumb}
-                />
+                {pub.imageUrl ? (
+                  <img src={pub.imageUrl} alt="" className={styles.listThumb} />
+                ) : (
+                  <StripePattern
+                    tone={pub.type === 'music' ? 'accent' : 'neutral'}
+                    className={styles.listThumb}
+                  />
+                )}
                 <div className={styles.listInfo}>
                   <strong>{pub.title}</strong>
                   <span>{PUBLICATION_TYPE_LABELS[pub.type]}</span>

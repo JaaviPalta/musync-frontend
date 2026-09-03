@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Row, Col, Form, Button } from 'react-bootstrap'
@@ -17,16 +17,26 @@ const NewPublication = () => {
   const [type, setType] = useState(existing?.type ?? 'music')
   const [done, setDone] = useState(null)
 
-  const { register, handleSubmit, watch } = useForm({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
       title: existing?.title ?? '',
       description: existing?.description ?? '',
       price: existing?.price ?? '',
       externalUrl: existing?.externalUrl ?? '',
+      image: undefined,
     },
   })
 
   const preview = watch()
+  const selectedImage = preview.image?.[0]
+  const [imagePreview, setImagePreview] = useState(existing?.imageUrl ?? null)
+
+  useEffect(() => {
+    if (!selectedImage) return
+    const objectUrl = URL.createObjectURL(selectedImage)
+    setImagePreview(objectUrl)
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedImage])
 
   const onSubmit = async (data, status) => {
     const patch = {
@@ -35,6 +45,8 @@ const NewPublication = () => {
       description: data.description,
       price: data.price ? Number(data.price) : null,
       externalUrl: data.externalUrl || null,
+      imageUrl: existing?.imageUrl ?? null,
+      image: data.image?.[0],
       status,
     }
     try {
@@ -138,7 +150,21 @@ const NewPublication = () => {
 
                 <Form.Group className={styles.field}>
                   <Form.Label className={styles.fieldLabel}>Imagen de portada</Form.Label>
-                  <div className={styles.dropzone}>Arrastra una imagen o pega una URL</div>
+                  <label className={styles.dropzone}>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      {...register('image', {
+                        validate: (files) => !files?.[0] || files[0].size <= 5 * 1024 * 1024 || 'La imagen no puede superar 5 MB',
+                      })}
+                    />
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Vista previa de portada" className={styles.imagePreview} />
+                    ) : (
+                      <span>Selecciona una imagen JPG, PNG o WebP (máximo 5 MB)</span>
+                    )}
+                  </label>
+                  {errors.image ? <small className={styles.error}>{errors.image.message}</small> : null}
                 </Form.Group>
 
                 <div className={styles.submitRow}>
@@ -165,10 +191,14 @@ const NewPublication = () => {
         <Col lg={5}>
           <div className={styles.sidebarCard}>
             <span className={styles.sidebarTitle}>Vista previa en tu página</span>
-            <StripePattern
-              tone={type === 'music' ? 'accent' : 'neutral'}
-              className={styles.previewThumb}
-            />
+            {imagePreview ? (
+              <img src={imagePreview} alt="Vista previa de portada" className={styles.previewThumb} />
+            ) : (
+              <StripePattern
+                tone={type === 'music' ? 'accent' : 'neutral'}
+                className={styles.previewThumb}
+              />
+            )}
             <span className={styles.previewBadge}>{PUBLICATION_TYPE_LABELS[type]}</span>
             <strong className={styles.previewTitle}>
               {preview.title || 'Título de tu publicación'}

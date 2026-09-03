@@ -9,10 +9,14 @@ const PublicationCard = ({ publication, artistProfile }) => (
     state={{ artistProfile }}
     className={styles.card}
   >
-    <StripePattern
-      tone={publication.type === 'music' ? 'accent' : 'neutral'}
-      className={styles.thumb}
-    />
+    {publication.imageUrl ? (
+      <img src={publication.imageUrl} alt="" className={styles.thumb} />
+    ) : (
+      <StripePattern
+        tone={publication.type === 'music' ? 'accent' : 'neutral'}
+        className={styles.thumb}
+      />
+    )}
     <span className={styles.badge}>{PUBLICATION_TYPE_LABELS[publication.type]}</span>
     <h3 className={styles.title}>{publication.title}</h3>
     <span className={styles.price}>{priceLabel(publication)}</span>
