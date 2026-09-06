@@ -123,3 +123,30 @@
 .confirmation a {
   color: var(--musync-accent);
 }
+
+.trackingBox {
+  background-color: var(--musync-bg, rgba(0, 0, 0, 0.15));
+  border: 1px solid var(--musync-border);
+  border-radius: var(--musync-radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.trackingLabel {
+  font-size: 0.85rem;
+  color: var(--musync-text-muted);
+  margin-bottom: 4px !important;
+}
+
+.trackingLink {
+  display: block;
+  color: var(--musync-accent);
+  word-break: break-all;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.trackingHint {
+  font-size: 0.8rem;
+  margin-bottom: 0 !important;
+}

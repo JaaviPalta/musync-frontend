@@ -9,6 +9,7 @@ import Login from '../pages/public/Login'
 import PublicProfile from '../pages/public/PublicProfile'
 import PublicationDetail from '../pages/public/PublicationDetail'
 import RequestQuote from '../pages/public/RequestQuote'
+import QuoteTracking from '../pages/public/QuoteTracking'
 import Cart from '../pages/public/Cart'
 import NotFound from '../pages/public/NotFound'
 
@@ -34,6 +35,7 @@ const AppRouter = () => {
         <Route path="/publication/:id" element={<PublicationDetail />} />
         <Route path="/publication/:id/cotizar" element={<RequestQuote />} />
         <Route path="/cotizar" element={<RequestQuote />} />
+        <Route path="/seguimiento/:token" element={<QuoteTracking />} />
         <Route path="/404" element={<NotFound />} />
       </Route>
 

@@ -51,6 +51,12 @@ export const api = {
   createQuote: (data) => request('/quotes', json('POST', data)),
   getQuotes: () => request('/quotes'),
   updateQuoteStatus: (id, status) => request(`/quotes/${id}/status`, json('PATCH', { status })),
+  // Chat de la cotización, lado artista (autenticado, dueño de la cotización)
+  getQuoteMessages: (id) => request(`/quotes/${id}/messages`),
+  sendQuoteMessage: (id, body) => request(`/quotes/${id}/messages`, json('POST', { body })),
+  // Seguimiento público, lado cliente (sin login, validado por el token del link)
+  getTrackedQuote: (token) => request(`/track/${token}`),
+  sendTrackedMessage: (token, body) => request(`/track/${token}/messages`, json('POST', { body })),
   createOrder: (data) => request('/orders', json('POST', data)),
   getOrders: () => request('/orders'),
 }

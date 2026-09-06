@@ -1,0 +1,59 @@
+.panel {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--musync-border);
+}
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 260px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.hint {
+  color: var(--musync-text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.bubble {
+  max-width: 85%;
+  border-radius: var(--musync-radius);
+  padding: 8px 12px;
+}
+
+.bubble strong {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--musync-text-muted);
+  margin-bottom: 2px;
+}
+
+.bubble p {
+  margin: 0;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+.bubbleClient {
+  align-self: flex-start;
+  background-color: var(--musync-bg);
+}
+
+.bubbleArtist {
+  align-self: flex-end;
+  background-color: rgba(var(--musync-accent-rgb), 0.16);
+}
+
+.replyForm {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.replyForm textarea {
+  flex: 1;
+}

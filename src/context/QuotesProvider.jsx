@@ -2,35 +2,16 @@ import { useContext, useEffect, useState } from 'react'
 import { QuotesContext } from './QuotesContext'
 import { UserContext } from './UserContext'
 import { api } from '../lib/api'
-
-// El front trabaja internamente con los estados en español (nueva/en_conversacion/
-// aceptada/rechazada, los mismos que usan los filtros y las etiquetas de Quotes.jsx
-// y DashboardHome.jsx), pero la base de datos los guarda en inglés
-// (pending/reviewed/accepted/rejected). Sin esta traducción en las dos direcciones,
-// una cotización recién traída o actualizada desde la API queda con un status que
-// ningún filtro reconoce, y por eso no se movía de pestaña hasta recargar la página
-// (recargar tampoco lo arreglaba de verdad: solo parecía, porque "Todas" no filtra).
-const STATUS_TO_API = {
-  nueva: 'pending',
-  en_conversacion: 'reviewed',
-  aceptada: 'accepted',
-  rechazada: 'rejected',
-}
-
-const STATUS_FROM_API = {
-  pending: 'nueva',
-  reviewed: 'en_conversacion',
-  accepted: 'aceptada',
-  rejected: 'rechazada',
-}
+import { QUOTE_STATUS_TO_API, QUOTE_STATUS_FROM_API } from '../utils/quotes'
 
 const normalizeQuote = (quote) => ({
   ...quote,
-  status: STATUS_FROM_API[quote.status] ?? quote.status,
+  status: QUOTE_STATUS_FROM_API[quote.status] ?? quote.status,
 })
 
 const QuotesProvider = ({ children }) => {
   const [quotes, setQuotes] = useState([])
+  const [loadedUserId, setLoadedUserId] = useState(null)
   const { user } = useContext(UserContext)
   const userId = user?.id
 
@@ -38,16 +19,21 @@ const QuotesProvider = ({ children }) => {
   // vuelve a pedir las cotizaciones cuando el login termina, en vez de quedarse con
   // el resultado (vacío) del primer chequeo hecho antes de que existiera sesión.
   useEffect(() => {
-    if (!userId) {
-      setQuotes([])
-      return
-    }
+    if (!userId) return
 
     api
       .getQuotes()
-      .then((data) => setQuotes(data.map(normalizeQuote)))
-      .catch(() => setQuotes([]))
+      .then((data) => {
+        setQuotes(data.map(normalizeQuote))
+        setLoadedUserId(userId)
+      })
+      .catch(() => {
+        setQuotes([])
+        setLoadedUserId(userId)
+      })
   }, [userId])
+
+  const visibleQuotes = user && loadedUserId === userId ? quotes : []
 
   const addQuote = async (data) => {
     const quote = normalizeQuote(await api.createQuote(data))
@@ -57,13 +43,24 @@ const QuotesProvider = ({ children }) => {
 
   const setStatus = async (id, status) => {
     const quote = normalizeQuote(
-      await api.updateQuoteStatus(id, STATUS_TO_API[status] || status),
+      await api.updateQuoteStatus(id, QUOTE_STATUS_TO_API[status] || status),
     )
     setQuotes((current) => current.map((q) => (q.id === id ? quote : q)))
   }
 
+  // El backend cambia el status solo (pending → reviewed) apenas alguien manda
+  // el primer mensaje en el chat de una cotización — eso no pasa por setStatus,
+  // así que después de mandar un mensaje hay que refrescar para que la pestaña
+  // que la muestra ("Nuevas" → "En conversación") lo refleje sin recargar.
+  const refreshQuotes = async () => {
+    if (!userId) return
+    const data = await api.getQuotes()
+    setQuotes(data.map(normalizeQuote))
+    setLoadedUserId(userId)
+  }
+
   return (
-    <QuotesContext.Provider value={{ quotes, addQuote, setStatus }}>
+    <QuotesContext.Provider value={{ quotes: visibleQuotes, addQuote, setStatus, refreshQuotes }}>
       {children}
     </QuotesContext.Provider>
   )

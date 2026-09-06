@@ -2,13 +2,17 @@ import { useContext, useMemo, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { toast } from 'sonner'
 import { QuotesContext } from '../../context/QuotesContext'
+import { UserContext } from '../../context/UserContext'
 import { confirmDialog } from '../../lib/swal'
 import { QUOTE_FILTERS, QUOTE_STATUS_LABELS } from '../../utils/quotes'
+import QuoteThread from '../../components/quotes/QuoteThread'
 import styles from './Quotes.module.css'
 
 const Quotes = () => {
-  const { quotes, setStatus } = useContext(QuotesContext)
+  const { quotes, setStatus, refreshQuotes } = useContext(QuotesContext)
+  const { user } = useContext(UserContext)
   const [filter, setFilter] = useState('all')
+  const [openThreadId, setOpenThreadId] = useState(null)
 
   const filtered = useMemo(
     () => (filter === 'all' ? quotes : quotes.filter((q) => q.status === filter)),
@@ -83,12 +87,11 @@ const Quotes = () => {
 
             <div className={styles.actions}>
               <Button
-                as="a"
-                href={`mailto:${quote.clientEmail}`}
                 variant="outline-primary"
                 size="sm"
+                onClick={() => setOpenThreadId(openThreadId === quote.id ? null : quote.id)}
               >
-                Responder
+                {openThreadId === quote.id ? 'Ocultar conversación' : 'Ver conversación'}
               </Button>
               <Button
                 variant="outline-secondary"
@@ -107,6 +110,14 @@ const Quotes = () => {
                 Rechazar
               </Button>
             </div>
+
+            {openThreadId === quote.id ? (
+              <QuoteThread
+                quoteId={quote.id}
+                artistName={user?.artistProfile?.artistName ?? 'Tú'}
+                onMessageSent={refreshQuotes}
+              />
+            ) : null}
           </div>
         ))
       )}

@@ -21,24 +21,32 @@ const RequestQuote = () => {
 
   const [requestType, setRequestType] = useState(requestTypes[0])
   const [submitted, setSubmitted] = useState(false)
+  const [trackingUrl, setTrackingUrl] = useState(null)
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm()
 
-  const onSubmit = (data) => {
-    addQuote({
-      publicationId: publication?.id ?? null,
-      clientName: data.clientName,
-      clientEmail: data.clientEmail,
-      budget: data.budget ? Number(data.budget.replace(/\D/g, '')) || null : null,
-      category: requestType,
-      subcategory: publication?.title ?? null,
-      message: data.message,
-    })
-    setSubmitted(true)
-    toast.success('Solicitud enviada')
+  const onSubmit = async (data) => {
+    try {
+      const quote = await addQuote({
+        publicationId: publication?.id ?? null,
+        clientName: data.clientName,
+        clientEmail: data.clientEmail,
+        budget: data.budget ? Number(data.budget.replace(/\D/g, '')) || null : null,
+        category: requestType,
+        subcategory: publication?.title ?? null,
+        message: data.message,
+      })
+      if (quote?.accessToken) {
+        setTrackingUrl(`${window.location.origin}/seguimiento/${quote.accessToken}`)
+      }
+      setSubmitted(true)
+      toast.success('Solicitud enviada')
+    } catch (error) {
+      toast.error(error.message || 'No se pudo enviar la solicitud')
+    }
   }
 
   return (
@@ -70,9 +78,21 @@ const RequestQuote = () => {
           <div className={styles.confirmation}>
             <h2>¡Solicitud enviada!</h2>
             <p>
-              {artistProfile.artistName} revisará tu mensaje y te responderá al email que
-              dejaste. Se guardó con estado <strong>nueva</strong>.
+              {artistProfile.artistName} revisará tu mensaje y te va a responder acá mismo, no
+              por email.
             </p>
+            {trackingUrl ? (
+              <div className={styles.trackingBox}>
+                <p className={styles.trackingLabel}>Tu link para seguir la conversación:</p>
+                <a href={trackingUrl} className={styles.trackingLink}>
+                  {trackingUrl}
+                </a>
+                <p className={styles.trackingHint}>
+                  Te lo mandamos también a tu correo por si cerrás esta ventana — es la única
+                  forma de volver a esta conversación.
+                </p>
+              </div>
+            ) : null}
             <Link to={`/artista/${artistProfile.username}`}>
               Volver a musync.com/{artistProfile.username}
             </Link>
@@ -141,8 +161,8 @@ const RequestQuote = () => {
             </Form.Group>
 
             <div className={styles.submitRow}>
-              <Button type="submit" variant="outline-primary">
-                Enviar solicitud
+              <Button type="submit" variant="outline-primary" disabled={isSubmitting}>
+                {isSubmitting ? 'Enviando…' : 'Enviar solicitud'}
               </Button>
               <span className={styles.submitHint}>
                 Se guarda con estado <strong>nueva</strong>
