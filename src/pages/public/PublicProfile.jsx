@@ -6,6 +6,7 @@ import StripePattern from '../../components/ui/StripePattern'
 import PublicationCard from '../../components/publication/PublicationCard'
 import { api } from '../../lib/api'
 import { PROFILE_FILTERS } from '../../utils/publications'
+import { demoArtistProfile } from '../../utils/demoArtist'
 import styles from './PublicProfile.module.css'
 
 const socialLinks = (profile) =>
@@ -27,11 +28,19 @@ const PublicProfile = () => {
       .then((profile) => {
         if (profile) {
           setArtistProfile(profile)
+        } else if (username === demoArtistProfile.username) {
+          setArtistProfile(demoArtistProfile)
         } else {
           setNotFound(true)
         }
       })
-      .catch(() => setNotFound(true))
+      .catch(() => {
+        if (username === demoArtistProfile.username) {
+          setArtistProfile(demoArtistProfile)
+        } else {
+          setNotFound(true)
+        }
+      })
   }, [username])
 
   const publications = artistProfile?.publications ?? []
