@@ -84,12 +84,24 @@ const PublicProfile = () => {
 
   return (
     <div>
-      <StripePattern className={styles.cover} />
+      {artistProfile.coverImageUrl ? (
+        <img src={artistProfile.coverImageUrl} alt="" className={styles.coverImage} />
+      ) : (
+        <StripePattern className={styles.cover} />
+      )}
 
       <Container className={styles.headerSection}>
         <Row className="align-items-end">
           <Col md={8}>
-            <StripePattern tone="neutral" className={styles.avatar} />
+            {artistProfile.avatarImageUrl ? (
+              <img
+                src={artistProfile.avatarImageUrl}
+                alt={`Retrato de ${artistProfile.artistName}`}
+                className={styles.avatarImage}
+              />
+            ) : (
+              <StripePattern tone="neutral" className={styles.avatar} />
+            )}
             <span className={styles.handle}>musync.com/{artistProfile.username}</span>
             <div className={styles.nameRow}>
               <h1 className={styles.name}>{artistProfile.artistName}</h1>

@@ -46,9 +46,13 @@
 }
 
 .loginLink {
+  border: 0;
+  padding: 0;
+  background: none;
   color: var(--musync-text);
   text-decoration: none;
   font-size: 0.95rem;
+  cursor: pointer;
 }
 
 .loginLink:hover {

@@ -7,7 +7,7 @@ import { CartContext } from '../../context/CartContext'
 import styles from './Navbar.module.css'
 
 const Navbar = () => {
-  const { user } = useContext(UserContext)
+  const { user, logout } = useContext(UserContext)
   const { items } = useContext(CartContext)
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
@@ -27,6 +27,9 @@ const Navbar = () => {
               </Nav.Link>
               <Nav.Link as={Link} to="/dashboard" className={styles.navLink}>
                 {user.artistProfile.artistName}
+              </Nav.Link>
+              <Nav.Link as="button" type="button" onClick={logout} className={styles.navLink}>
+                Cerrar sesión
               </Nav.Link>
             </>
           ) : (

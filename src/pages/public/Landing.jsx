@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Diamond } from 'lucide-react'
 import StripePattern from '../../components/ui/StripePattern'
 import { PublicationsContext } from '../../context/PublicationsContext'
+import { UserContext } from '../../context/UserContext'
 import { priceLabel } from '../../utils/publications'
 import styles from './Landing.module.css'
 
@@ -73,11 +74,13 @@ const reasons = [
 
 const Landing = () => {
   const { publications } = useContext(PublicationsContext)
+  const { user, logout } = useContext(UserContext)
   const artistProfile = {
-    username: 'demo',
-    artistName: 'Tu proyecto musical',
-    roleLine: 'Artista independiente',
+    username: user?.artistProfile?.username ?? 'demo',
+    artistName: user?.artistProfile?.artistName ?? 'Tu proyecto musical',
+    roleLine: user?.artistProfile?.roleLine ?? 'Artista independiente',
   }
+  const profilePath = `/artista/${artistProfile.username}`
   const previewPublications = ['music', 'digital_product', 'service', 'portfolio'].map((type) =>
     publications.find((p) => p.type === type),
   ).filter(Boolean)
@@ -95,11 +98,17 @@ const Landing = () => {
             <a href="#por-que">Para quién es</a>
             <Link to="/artista/demo">Ejemplo</Link>
           </nav>
-          <Link to="/login" className={styles.loginLink}>
-            Log in
-          </Link>
-          <Button as={Link} to="/register" variant="outline-primary" size="sm">
-            Crear mi página
+          {user ? (
+            <button type="button" className={styles.loginLink} onClick={logout}>
+              Cerrar sesión
+            </button>
+          ) : (
+            <Link to="/login" className={styles.loginLink}>
+              Log in
+            </Link>
+          )}
+          <Button as={Link} to={user ? profilePath : '/register'} variant="outline-primary" size="sm">
+            {user ? 'Ir a mi perfil' : 'Crear mi página'}
           </Button>
         </Container>
       </header>
@@ -117,8 +126,8 @@ const Landing = () => {
                 página propia — y vende o recibe solicitudes de contratación desde ahí mismo.
               </p>
               <div className={styles.heroActions}>
-                <Button as={Link} to="/register" variant="primary">
-                  Crear mi página
+                <Button as={Link} to={user ? profilePath : '/register'} variant="primary">
+                  {user ? 'Ir a mi perfil' : 'Crear mi página'}
                 </Button>
                 <Button
                   as={Link}
@@ -239,8 +248,8 @@ const Landing = () => {
                   Gratis para crear tu perfil y publicar. Sin comisiones en el MVP.
                 </p>
               </div>
-              <Button as={Link} to="/register" variant="outline-primary">
-                Crear mi página
+              <Button as={Link} to={user ? profilePath : '/register'} variant="outline-primary">
+                {user ? 'Ir a mi perfil' : 'Crear mi página'}
               </Button>
             </div>
           </Container>
