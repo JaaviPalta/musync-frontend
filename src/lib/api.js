@@ -45,6 +45,22 @@ const profileMultipart = (fields) => {
   return { method: 'PATCH', body }
 }
 
+const normalizeArtistProfile = (profile) => {
+  if (!profile) return profile
+
+  const socialLinks = profile.socialLinks ?? profile.social_links ?? {}
+  return {
+    ...profile,
+    artistName: profile.artistName ?? profile.artist_name,
+    roleLine: profile.roleLine ?? profile.specialty,
+    avatarImageUrl: profile.avatarImageUrl ?? profile.avatarUrl ?? profile.avatar_url,
+    coverImageUrl: profile.coverImageUrl ?? profile.coverUrl ?? profile.cover_url,
+    spotifyUrl: profile.spotifyUrl ?? socialLinks.spotify,
+    youtubeUrl: profile.youtubeUrl ?? socialLinks.youtube,
+    instagramUrl: profile.instagramUrl ?? socialLinks.instagram,
+  }
+}
+
 export const api = {
   register: (data) => request('/auth/register', json('POST', data)),
   login: (data) => request('/auth/login', json('POST', data)),
@@ -56,7 +72,8 @@ export const api = {
         ? profileMultipart(data)
         : json('PATCH', data),
     ),
-  getProfile: (username) => request(`/artists/${encodeURIComponent(username)}`),
+  getProfile: (username) =>
+    request(`/artists/${encodeURIComponent(username)}`).then(normalizeArtistProfile),
   getPublications: () => request('/publications'),
   getPublication: (id) => request(`/publications/${id}`),
   getArtistPublications: (username) => request(`/artists/${encodeURIComponent(username)}/publications`),
