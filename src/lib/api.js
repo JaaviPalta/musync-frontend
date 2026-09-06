@@ -32,12 +32,48 @@ const multipart = (method, fields, file) => {
   return { method, body }
 }
 
+const profileMultipart = (fields) => {
+  const body = new FormData()
+  Object.entries(fields).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === '') return
+    if (key === 'avatar' || key === 'cover') {
+      body.append(key, value)
+      return
+    }
+    body.append(key, Array.isArray(value) ? JSON.stringify(value) : String(value))
+  })
+  return { method: 'PATCH', body }
+}
+
+const normalizeArtistProfile = (profile) => {
+  if (!profile) return profile
+
+  const socialLinks = profile.socialLinks ?? profile.social_links ?? {}
+  return {
+    ...profile,
+    artistName: profile.artistName ?? profile.artist_name,
+    roleLine: profile.roleLine ?? profile.specialty,
+    avatarImageUrl: profile.avatarImageUrl ?? profile.avatarUrl ?? profile.avatar_url,
+    coverImageUrl: profile.coverImageUrl ?? profile.coverUrl ?? profile.cover_url,
+    spotifyUrl: profile.spotifyUrl ?? socialLinks.spotify,
+    youtubeUrl: profile.youtubeUrl ?? socialLinks.youtube,
+    instagramUrl: profile.instagramUrl ?? socialLinks.instagram,
+  }
+}
+
 export const api = {
   register: (data) => request('/auth/register', json('POST', data)),
   login: (data) => request('/auth/login', json('POST', data)),
   me: () => request('/auth/me'),
-  updateProfile: (data) => request('/profile', json('PATCH', data)),
-  getProfile: (username) => request(`/artists/${encodeURIComponent(username)}`),
+  updateProfile: (data) =>
+    request(
+      '/profile',
+      data.avatar instanceof File || data.cover instanceof File
+        ? profileMultipart(data)
+        : json('PATCH', data),
+    ),
+  getProfile: (username) =>
+    request(`/artists/${encodeURIComponent(username)}`).then(normalizeArtistProfile),
   getPublications: () => request('/publications'),
   getPublication: (id) => request(`/publications/${id}`),
   getArtistPublications: (username) => request(`/artists/${encodeURIComponent(username)}/publications`),

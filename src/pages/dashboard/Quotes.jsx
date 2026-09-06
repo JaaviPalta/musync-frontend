@@ -24,6 +24,11 @@ const Quotes = () => {
     toast.success(`Cotización de ${quote.clientName} aceptada`)
   }
 
+  const handleConversation = (quote) => {
+    setStatus(quote.id, 'en_conversacion')
+    toast.success(`Cotización de ${quote.clientName} pasó a conversación`)
+  }
+
   const handleReject = async (quote) => {
     const confirmed = await confirmDialog({
       title: `¿Rechazar la solicitud de ${quote.clientName}?`,
@@ -65,11 +70,12 @@ const Quotes = () => {
             <div className={styles.cardHeader}>
               <div>
                 <strong className={styles.clientName}>{quote.clientName}</strong>
-                <span className={`${styles.statusBadge} ${styles[`status_${quote.status}`]}`}>
-                  {QUOTE_STATUS_LABELS[quote.status]}
+                <span className={`${styles.statusBadge} ${styles[`status_${quote.status}`] ?? ''}`}>
+                  {QUOTE_STATUS_LABELS[quote.status] ?? quote.status}
                 </span>
                 <p className={styles.contactLine}>
-                  {quote.clientEmail} · {quote.createdLabel}
+                  {quote.clientEmail}
+                  {quote.createdLabel ? ` · ${quote.createdLabel}` : null}
                 </p>
               </div>
               <div className={styles.budget}>
@@ -92,6 +98,14 @@ const Quotes = () => {
                 onClick={() => setOpenThreadId(openThreadId === quote.id ? null : quote.id)}
               >
                 {openThreadId === quote.id ? 'Ocultar conversación' : 'Ver conversación'}
+              </Button>
+              <Button
+                variant="outline-secondary"
+                size="sm"
+                disabled={quote.status === 'en_conversacion'}
+                onClick={() => handleConversation(quote)}
+              >
+                En conversación
               </Button>
               <Button
                 variant="outline-secondary"
@@ -123,7 +137,13 @@ const Quotes = () => {
       )}
 
       <p className={styles.footerHint}>
-        Estados en <code>quotes.status</code>: nueva · en_conversacion · aceptada · rechazada
+        Estados disponibles:{' '}
+        {QUOTE_FILTERS.slice(1).map((status, index) => (
+          <span key={status.key}>
+            {index ? ' · ' : ''}
+            {status.label}
+          </span>
+        ))}
       </p>
     </div>
   )

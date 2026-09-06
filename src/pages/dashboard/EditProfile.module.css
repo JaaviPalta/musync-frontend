@@ -18,6 +18,19 @@
   font-size: 0.85rem;
 }
 
+.fileInput::file-selector-button {
+  background-color: var(--musync-accent);
+  border: 0;
+  border-right: 1px solid var(--musync-accent);
+  color: var(--musync-bg);
+  cursor: pointer;
+}
+
+.fileInput:hover::file-selector-button {
+  background-color: color-mix(in srgb, var(--musync-accent) 85%, white);
+  border-right-color: color-mix(in srgb, var(--musync-accent) 85%, white);
+}
+
 .submitRow {
   display: flex;
   align-items: center;
@@ -44,6 +57,24 @@
   width: 64px;
   height: 64px;
   margin-bottom: 12px;
+}
+
+.previewCover {
+  display: block;
+  width: 100%;
+  height: 96px;
+  margin-bottom: -32px;
+  object-fit: cover;
+}
+
+.previewAvatarImage {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 12px;
+  object-fit: cover;
+  border: 3px solid var(--musync-surface);
+  border-radius: 50%;
 }
 
 .previewName {

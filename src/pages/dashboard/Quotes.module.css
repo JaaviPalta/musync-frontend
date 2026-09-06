@@ -70,6 +70,11 @@
   color: var(--musync-accent);
 }
 
+.status_en_conversacion {
+  background-color: rgba(245, 180, 76, 0.18);
+  color: #e7b45a;
+}
+
 .status_aceptada {
   background-color: rgba(94, 197, 133, 0.18);
   color: #6fd39a;

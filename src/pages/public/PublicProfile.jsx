@@ -6,6 +6,7 @@ import StripePattern from '../../components/ui/StripePattern'
 import PublicationCard from '../../components/publication/PublicationCard'
 import { api } from '../../lib/api'
 import { PROFILE_FILTERS } from '../../utils/publications'
+import { demoArtistProfile } from '../../utils/demoArtist'
 import styles from './PublicProfile.module.css'
 
 const socialLinks = (profile) =>
@@ -27,11 +28,19 @@ const PublicProfile = () => {
       .then((profile) => {
         if (profile) {
           setArtistProfile(profile)
+        } else if (username === demoArtistProfile.username) {
+          setArtistProfile(demoArtistProfile)
         } else {
           setNotFound(true)
         }
       })
-      .catch(() => setNotFound(true))
+      .catch(() => {
+        if (username === demoArtistProfile.username) {
+          setArtistProfile(demoArtistProfile)
+        } else {
+          setNotFound(true)
+        }
+      })
   }, [username])
 
   const publications = artistProfile?.publications ?? []
@@ -75,12 +84,24 @@ const PublicProfile = () => {
 
   return (
     <div>
-      <StripePattern className={styles.cover} />
+      {artistProfile.coverImageUrl ? (
+        <img src={artistProfile.coverImageUrl} alt="" className={styles.coverImage} />
+      ) : (
+        <StripePattern className={styles.cover} />
+      )}
 
       <Container className={styles.headerSection}>
         <Row className="align-items-end">
           <Col md={8}>
-            <StripePattern tone="neutral" className={styles.avatar} />
+            {artistProfile.avatarImageUrl ? (
+              <img
+                src={artistProfile.avatarImageUrl}
+                alt={`Retrato de ${artistProfile.artistName}`}
+                className={styles.avatarImage}
+              />
+            ) : (
+              <StripePattern tone="neutral" className={styles.avatar} />
+            )}
             <span className={styles.handle}>musync.com/{artistProfile.username}</span>
             <div className={styles.nameRow}>
               <h1 className={styles.name}>{artistProfile.artistName}</h1>
