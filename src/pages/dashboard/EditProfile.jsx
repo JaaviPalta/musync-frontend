@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Row, Col, Form, Button } from 'react-bootstrap'
 import { toast } from 'sonner'
@@ -25,13 +25,34 @@ const EditProfile = () => {
       spotifyUrl: artistProfile.spotifyUrl,
       youtubeUrl: artistProfile.youtubeUrl,
       instagramUrl: artistProfile.instagramUrl,
+      avatar: undefined,
+      cover: undefined,
     },
   })
 
   const preview = watch()
+  const selectedAvatar = preview.avatar?.[0]
+  const selectedCover = preview.cover?.[0]
+  const [avatarPreview, setAvatarPreview] = useState(artistProfile.avatarImageUrl ?? null)
+  const [coverPreview, setCoverPreview] = useState(artistProfile.coverImageUrl ?? null)
 
-  const onSubmit = (data) => {
-    updateProfile({
+  useEffect(() => {
+    if (!selectedAvatar) return
+    const objectUrl = URL.createObjectURL(selectedAvatar)
+    setAvatarPreview(objectUrl)
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedAvatar])
+
+  useEffect(() => {
+    if (!selectedCover) return
+    const objectUrl = URL.createObjectURL(selectedCover)
+    setCoverPreview(objectUrl)
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedCover])
+
+  const onSubmit = async (data) => {
+    try {
+      await updateProfile({
       artistName: data.artistName,
       roleLine: data.roleLine,
       bio: data.bio,
@@ -45,8 +66,13 @@ const EditProfile = () => {
       spotifyUrl: data.spotifyUrl,
       youtubeUrl: data.youtubeUrl,
       instagramUrl: data.instagramUrl,
-    })
-    toast.success('Perfil actualizado')
+        avatar: data.avatar?.[0],
+        cover: data.cover?.[0],
+      })
+      toast.success('Perfil actualizado')
+    } catch (error) {
+      toast.error(error.message || 'No se pudo actualizar el perfil')
+    }
   }
 
   return (
@@ -111,6 +137,31 @@ const EditProfile = () => {
             />
 
             <Row className="g-3">
+              <Col md={6}>
+                <Form.Group className={styles.field}>
+                  <Form.Label className={styles.fieldLabel}>Foto de perfil</Form.Label>
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    className={styles.fileInput}
+                    {...register('avatar')}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className={styles.field}>
+                  <Form.Label className={styles.fieldLabel}>Imagen de fondo</Form.Label>
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    className={styles.fileInput}
+                    {...register('cover')}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Row className="g-3">
               <Col md={4}>
                 <Form.Group className={styles.field}>
                   <Form.Label className={styles.fieldLabel}>Spotify</Form.Label>
@@ -142,7 +193,14 @@ const EditProfile = () => {
         <Col lg={5}>
           <div className={styles.previewCard}>
             <span className={styles.previewLabel}>Vista previa</span>
-            <StripePattern tone="neutral" className={styles.previewAvatar} />
+            {coverPreview ? (
+              <img src={coverPreview} alt="" className={styles.previewCover} />
+            ) : null}
+            {avatarPreview ? (
+              <img src={avatarPreview} alt="Vista previa del perfil" className={styles.previewAvatarImage} />
+            ) : (
+              <StripePattern tone="neutral" className={styles.previewAvatar} />
+            )}
             <h3 className={styles.previewName}>{preview.artistName}</h3>
             <p className={styles.previewRole}>{preview.roleLine}</p>
             <p className={styles.previewLocation}>

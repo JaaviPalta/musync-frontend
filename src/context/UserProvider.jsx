@@ -2,6 +2,13 @@ import { useEffect, useState } from 'react'
 import { UserContext } from './UserContext'
 import { api } from '../lib/api'
 
+const normalizeProfile = (profile) => ({
+  ...profile,
+  tags: Array.isArray(profile?.tags) ? profile.tags : [],
+  avatarImageUrl: profile?.avatarImageUrl ?? profile?.avatarUrl ?? profile?.avatar_url,
+  coverImageUrl: profile?.coverImageUrl ?? profile?.coverUrl ?? profile?.cover_url,
+})
+
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   // Mientras esto es true, todavía no sabemos si hay una sesión válida o no.
@@ -13,10 +20,7 @@ const UserProvider = ({ children }) => {
   const setAuthenticatedUser = (result) =>
     setUser({
       ...result.user,
-      artistProfile: {
-        ...result.profile,
-        tags: Array.isArray(result.profile?.tags) ? result.profile.tags : [],
-      },
+      artistProfile: normalizeProfile(result.profile),
     })
 
   useEffect(() => {
@@ -46,10 +50,7 @@ const UserProvider = ({ children }) => {
 
   const updateProfile = async (patch) => {
     const profile = await api.updateProfile(patch)
-    const normalizedProfile = {
-      ...profile,
-      tags: Array.isArray(profile?.tags) ? profile.tags : [],
-    }
+    const normalizedProfile = normalizeProfile(profile)
     setUser((current) => ({ ...current, artistProfile: normalizedProfile }))
     return normalizedProfile
   }

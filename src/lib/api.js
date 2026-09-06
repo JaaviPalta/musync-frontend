@@ -32,11 +32,30 @@ const multipart = (method, fields, file) => {
   return { method, body }
 }
 
+const profileMultipart = (fields) => {
+  const body = new FormData()
+  Object.entries(fields).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === '') return
+    if (key === 'avatar' || key === 'cover') {
+      body.append(key, value)
+      return
+    }
+    body.append(key, Array.isArray(value) ? JSON.stringify(value) : String(value))
+  })
+  return { method: 'PATCH', body }
+}
+
 export const api = {
   register: (data) => request('/auth/register', json('POST', data)),
   login: (data) => request('/auth/login', json('POST', data)),
   me: () => request('/auth/me'),
-  updateProfile: (data) => request('/profile', json('PATCH', data)),
+  updateProfile: (data) =>
+    request(
+      '/profile',
+      data.avatar instanceof File || data.cover instanceof File
+        ? profileMultipart(data)
+        : json('PATCH', data),
+    ),
   getProfile: (username) => request(`/artists/${encodeURIComponent(username)}`),
   getPublications: () => request('/publications'),
   getPublication: (id) => request(`/publications/${id}`),
