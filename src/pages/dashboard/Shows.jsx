@@ -33,7 +33,7 @@ const Shows = () => {
     <div>
       <h1 className={styles.title}>Shows</h1>
       <p className={styles.subtitle}>
-        Próximos shows y trayectoria anterior. Sin venta de entradas en el MVP.
+        Próximos shows y trayectoria anterior.
       </p>
 
       <Row className="g-4 mt-1">

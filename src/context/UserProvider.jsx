@@ -4,6 +4,11 @@ import { api } from '../lib/api'
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+  // Mientras esto es true, todavía no sabemos si hay una sesión válida o no.
+  // Sin este estado, ProtectedRoute ve user=null en el primer render (antes de
+  // que la llamada a /auth/me resuelva) y manda a /login aunque el token en
+  // localStorage sea válido — pasaba en cualquier recarga completa de página.
+  const [isLoading, setIsLoading] = useState(true)
 
   const setAuthenticatedUser = (result) =>
     setUser({
@@ -15,8 +20,15 @@ const UserProvider = ({ children }) => {
     })
 
   useEffect(() => {
-    if (!localStorage.getItem('musync_token')) return
-    api.me().then(setAuthenticatedUser).catch(() => localStorage.removeItem('musync_token'))
+    if (!localStorage.getItem('musync_token')) {
+      setIsLoading(false)
+      return
+    }
+    api
+      .me()
+      .then(setAuthenticatedUser)
+      .catch(() => localStorage.removeItem('musync_token'))
+      .finally(() => setIsLoading(false))
   }, [])
 
   const authenticate = (result) => {
@@ -43,7 +55,7 @@ const UserProvider = ({ children }) => {
   }
 
   return (
-    <UserContext.Provider value={{ user, login, register, logout, updateProfile }}>
+    <UserContext.Provider value={{ user, isLoading, login, register, logout, updateProfile }}>
       {children}
     </UserContext.Provider>
   )

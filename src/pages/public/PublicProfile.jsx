@@ -169,7 +169,7 @@ const PublicProfile = () => {
               ) : (
                 <p className={styles.emptyState}>Sin shows agendados.</p>
               )}
-              <p className={styles.sidebarHint}>Sin venta de entradas en el MVP.</p>
+           
             </div>
 
             <div className={styles.sidebarCard}>
