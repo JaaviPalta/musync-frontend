@@ -88,7 +88,7 @@ const RequestQuote = () => {
                   {trackingUrl}
                 </a>
                 <p className={styles.trackingHint}>
-                  Te lo mandamos también a tu correo por si cerrás esta ventana — es la única
+                  Te lo mandamos también a tu correo por si cierras esta ventana — es la única
                   forma de volver a esta conversación.
                 </p>
               </div>
