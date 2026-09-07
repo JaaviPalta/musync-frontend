@@ -50,6 +50,25 @@ export const PUBLICATION_TYPE_OPTIONS = [
   },
 ]
 
+export const PUBLICATION_FIELD_PLACEHOLDERS = {
+  music: {
+    title: 'Kusushiki Remix',
+    description: 'Género, con quién la hiciste, dónde se puede escuchar.',
+  },
+  digital_product: {
+    title: 'Cyberpunk Sample Pack',
+    description: 'Qué incluye, para quién es, formato de entrega.',
+  },
+  service: {
+    title: 'Producción musical',
+    description: 'Qué incluye el servicio, plazos, cómo trabajas.',
+  },
+  portfolio: {
+    title: 'Video Game Soundtrack',
+    description: 'Contexto del proyecto, tu rol, para quién fue.',
+  },
+}
+
 export const formatPrice = (price) =>
   price == null ? null : `$${price.toLocaleString('es-CL')}`
 

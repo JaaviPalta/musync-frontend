@@ -5,7 +5,12 @@ import { Row, Col, Form, Button } from 'react-bootstrap'
 import { toast } from 'sonner'
 import StripePattern from '../../components/ui/StripePattern'
 import { PublicationsContext } from '../../context/PublicationsContext'
-import { PUBLICATION_TYPE_OPTIONS, priceLabel, PUBLICATION_TYPE_LABELS } from '../../utils/publications'
+import {
+  PUBLICATION_TYPE_OPTIONS,
+  PUBLICATION_FIELD_PLACEHOLDERS,
+  priceLabel,
+  PUBLICATION_TYPE_LABELS,
+} from '../../utils/publications'
 import styles from './NewPublication.module.css'
 
 const NewPublication = () => {
@@ -17,7 +22,7 @@ const NewPublication = () => {
   const [type, setType] = useState(existing?.type ?? 'music')
   const [done, setDone] = useState(null)
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
       title: existing?.title ?? '',
       description: existing?.description ?? '',
@@ -104,7 +109,6 @@ const NewPublication = () => {
                         onClick={() => setType(option.code)}
                       >
                         <strong>{option.label}</strong>
-                        <code>{option.code}</code>
                       </button>
                     </Col>
                   ))}
@@ -113,7 +117,7 @@ const NewPublication = () => {
                 <Form.Group className={styles.field}>
                   <Form.Label className={styles.fieldLabel}>Título</Form.Label>
                   <Form.Control
-                    placeholder="Cyberpunk Sample Pack"
+                    placeholder={PUBLICATION_FIELD_PLACEHOLDERS[type].title}
                     {...register('title', { required: true })}
                   />
                 </Form.Group>
@@ -123,7 +127,7 @@ const NewPublication = () => {
                   <Form.Control
                     as="textarea"
                     rows={3}
-                    placeholder="Qué incluye, para quién es, formato de entrega."
+                    placeholder={PUBLICATION_FIELD_PLACEHOLDERS[type].description}
                     {...register('description')}
                   />
                 </Form.Group>
@@ -132,12 +136,29 @@ const NewPublication = () => {
                   <Col md={6}>
                     <Form.Group className={styles.field}>
                       <Form.Label className={styles.fieldLabel}>Precio (CLP)</Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="9900"
-                        disabled={type === 'service' || type === 'portfolio'}
-                        {...register('price')}
-                      />
+                      <div className={styles.priceRow}>
+                        <Form.Control
+                          type="number"
+                          placeholder="9900"
+                          disabled={type === 'portfolio'}
+                          {...register('price')}
+                        />
+                        {type === 'service' ? (
+                          <Button
+                            type="button"
+                            variant="outline-secondary"
+                            size="sm"
+                            onClick={() => setValue('price', '')}
+                          >
+                            Cotizar
+                          </Button>
+                        ) : null}
+                      </div>
+                      {type === 'service' && !preview.price ? (
+                        <small className={styles.priceHint}>
+                          Sin precio fijo: en tu página se muestra "Solicitar cotización".
+                        </small>
+                      ) : null}
                     </Form.Group>
                   </Col>
                   <Col md={6}>
