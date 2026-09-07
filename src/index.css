@@ -102,6 +102,19 @@ input[type='date']::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
 
+/* Saca las flechitas de subir/bajar de cualquier input type="number" (hoy
+   solo el precio de una publicación, pero queda para cualquiera futuro) —
+   no tienen sentido para valores como precios, donde nadie suma de a uno. */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
 .swal-cancel-outline {
   background: transparent !important;
   border: 1px solid var(--musync-border) !important;
