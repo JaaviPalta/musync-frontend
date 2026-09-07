@@ -70,6 +70,7 @@
   border: 1px dashed var(--musync-border);
   border-radius: var(--musync-radius);
   padding: 28px;
+  margin-left: 16px;
   text-align: center;
   color: var(--musync-text-muted);
   font-size: 0.9rem;
