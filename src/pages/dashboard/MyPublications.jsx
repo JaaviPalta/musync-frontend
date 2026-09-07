@@ -131,9 +131,7 @@ const MyPublications = () => {
         {filtered.length === 0 ? <p className={styles.emptyState}>No hay publicaciones para este filtro.</p> : null}
       </div>
 
-      <p className={styles.footerHint}>
-        {publications.length} publicaciones · CRUD completo sobre la tabla <code>publications</code>
-      </p>
+      <p className={styles.footerHint}>{publications.length} publicaciones</p>
     </div>
   )
 }
