@@ -9,6 +9,7 @@ import {
   PUBLICATION_TYPE_OPTIONS,
   PUBLICATION_FIELD_PLACEHOLDERS,
   priceLabel,
+  formatThousands,
   PUBLICATION_TYPE_LABELS,
 } from '../../utils/publications'
 import styles from './NewPublication.module.css'
@@ -22,11 +23,10 @@ const NewPublication = () => {
   const [type, setType] = useState(existing?.type ?? 'music')
   const [done, setDone] = useState(null)
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
       title: existing?.title ?? '',
       description: existing?.description ?? '',
-      price: existing?.price ?? '',
       externalUrl: existing?.externalUrl ?? '',
       image: undefined,
     },
@@ -35,6 +35,12 @@ const NewPublication = () => {
   const preview = watch()
   const selectedImage = preview.image?.[0]
   const [imagePreview, setImagePreview] = useState(existing?.imageUrl ?? null)
+  // El precio queda completamente afuera de react-hook-form: si el formateo
+  // con puntos dependiera de su watch()/setValue, hay dos sistemas de estado
+  // sincronizándose entre sí en cada tecla, y escribiendo rápido se pierden
+  // dígitos (probado: "45000" tecleado rápido terminaba guardando "45").
+  // Un solo useState no tiene ese problema, no hay nada con quién correr.
+  const [priceDigits, setPriceDigits] = useState(existing?.price != null ? String(existing.price) : '')
 
   useEffect(() => {
     if (!selectedImage) return
@@ -48,7 +54,7 @@ const NewPublication = () => {
       type,
       title: data.title,
       description: data.description,
-      price: data.price ? Number(data.price) : null,
+      price: type === 'portfolio' ? null : priceDigits ? Number(priceDigits) : null,
       externalUrl: data.externalUrl || null,
       imageUrl: existing?.imageUrl ?? null,
       image: data.image?.[0],
@@ -139,22 +145,25 @@ const NewPublication = () => {
                         <Form.Label className={styles.fieldLabel}>Precio (CLP)</Form.Label>
                         <div className={styles.priceRow}>
                           <Form.Control
-                            type="number"
-                            placeholder="9900"
-                            {...register('price')}
+                            type="text"
+                            name="price"
+                            inputMode="numeric"
+                            placeholder="9.900"
+                            value={formatThousands(priceDigits)}
+                            onChange={(event) => setPriceDigits(event.target.value.replace(/\D/g, ''))}
                           />
                           {type === 'service' ? (
                             <Button
                               type="button"
                               variant="outline-secondary"
                               size="sm"
-                              onClick={() => setValue('price', '')}
+                              onClick={() => setPriceDigits('')}
                             >
                               Cotizar
                             </Button>
                           ) : null}
                         </div>
-                        {type === 'service' && !preview.price ? (
+                        {type === 'service' && !priceDigits ? (
                           <small className={styles.priceHint}>
                             Sin precio fijo: en tu página se muestra "Solicitar cotización".
                           </small>
@@ -242,7 +251,7 @@ const NewPublication = () => {
               {preview.title || 'Título de tu publicación'}
             </strong>
             <span className={styles.previewPrice}>
-              {priceLabel({ type, price: preview.price ? Number(preview.price) : null })}
+              {priceLabel({ type, price: priceDigits ? Number(priceDigits) : null })}
             </span>
           </div>
 
