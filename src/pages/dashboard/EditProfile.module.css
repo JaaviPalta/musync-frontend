@@ -18,6 +18,10 @@
   font-size: 0.85rem;
 }
 
+.bioField {
+  resize: none;
+}
+
 .fileInput::file-selector-button {
   background-color: var(--musync-accent);
   border: 0;

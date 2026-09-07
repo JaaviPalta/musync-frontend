@@ -105,7 +105,12 @@ const EditProfile = () => {
 
             <Form.Group className={styles.field}>
               <Form.Label className={styles.fieldLabel}>Bio</Form.Label>
-              <Form.Control as="textarea" rows={4} {...register('bio')} />
+              <Form.Control
+                as="textarea"
+                rows={8}
+                className={styles.bioField}
+                {...register('bio')}
+              />
             </Form.Group>
 
             <Row className="g-3">
