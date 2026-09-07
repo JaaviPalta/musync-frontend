@@ -7,6 +7,7 @@ import StripePattern from '../../components/ui/StripePattern'
 import { UserContext } from '../../context/UserContext'
 import { PublicationsContext } from '../../context/PublicationsContext'
 import { QuotesContext } from '../../context/QuotesContext'
+import { formatThousands } from '../../utils/format'
 import styles from './RequestQuote.module.css'
 
 const requestTypes = ['Servicio musical', 'Evento / Show', 'Colaboración', 'Otro']
@@ -22,6 +23,9 @@ const RequestQuote = () => {
   const [requestType, setRequestType] = useState(requestTypes[0])
   const [submitted, setSubmitted] = useState(false)
   const [trackingUrl, setTrackingUrl] = useState(null)
+  // Mismo motivo que en NewPublication.jsx: afuera de react-hook-form para
+  // que el formateo con puntos no compita con su propio estado al escribir.
+  const [budgetDigits, setBudgetDigits] = useState('')
   const {
     register,
     handleSubmit,
@@ -34,7 +38,7 @@ const RequestQuote = () => {
         publicationId: publication?.id ?? null,
         clientName: data.clientName,
         clientEmail: data.clientEmail,
-        budget: data.budget ? Number(data.budget.replace(/\D/g, '')) || null : null,
+        budget: budgetDigits ? Number(budgetDigits) : null,
         category: requestType,
         subcategory: publication?.title ?? null,
         message: data.message,
@@ -143,7 +147,14 @@ const RequestQuote = () => {
 
             <Form.Group className={styles.field}>
               <Form.Label className={styles.fieldLabel}>Presupuesto aproximado (opcional)</Form.Label>
-              <Form.Control type="text" placeholder="$400.000 CLP" {...register('budget')} />
+              <Form.Control
+                type="text"
+                name="budget"
+                inputMode="numeric"
+                placeholder="$400.000"
+                value={budgetDigits ? `$${formatThousands(budgetDigits)}` : ''}
+                onChange={(event) => setBudgetDigits(event.target.value.replace(/\D/g, ''))}
+              />
             </Form.Group>
 
             <Form.Group className={styles.field}>
@@ -164,9 +175,6 @@ const RequestQuote = () => {
               <Button type="submit" variant="outline-primary" disabled={isSubmitting}>
                 {isSubmitting ? 'Enviando…' : 'Enviar solicitud'}
               </Button>
-              <span className={styles.submitHint}>
-                Se guarda con estado <strong>nueva</strong>
-              </span>
             </div>
           </Form>
         )}

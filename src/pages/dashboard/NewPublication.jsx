@@ -9,9 +9,9 @@ import {
   PUBLICATION_TYPE_OPTIONS,
   PUBLICATION_FIELD_PLACEHOLDERS,
   priceLabel,
-  formatThousands,
   PUBLICATION_TYPE_LABELS,
 } from '../../utils/publications'
+import { formatThousands } from '../../utils/format'
 import styles from './NewPublication.module.css'
 
 const NewPublication = () => {
