@@ -7,6 +7,7 @@ import { UserContext } from '../../context/UserContext'
 import { CartContext } from '../../context/CartContext'
 import { api } from '../../lib/api'
 import { PUBLICATION_TYPE_LABELS, priceLabel } from '../../utils/publications'
+import { getEmbedInfo } from '../../utils/embed'
 import styles from './PublicationDetail.module.css'
 
 const specRows = (publication) =>
@@ -58,6 +59,7 @@ const PublicationDetail = () => {
 
   const rows = specRows(publication)
   const isPurchasable = publication.type === 'music' || publication.type === 'digital_product'
+  const embed = getEmbedInfo(publication.externalUrl)
 
   const handleAddToCart = () => {
     addItem({ ...publication, artistName: artistProfile.artistName })
@@ -77,7 +79,17 @@ const PublicationDetail = () => {
 
       <Row className="g-5 mt-1">
         <Col lg={6}>
-          {publication.imageUrl ? (
+          {embed ? (
+            <iframe
+              key={embed.embedUrl}
+              src={embed.embedUrl}
+              title={publication.title}
+              className={embed.type === 'spotify' ? styles.embedSpotify : styles.embedYoutube}
+              frameBorder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            />
+          ) : publication.imageUrl ? (
             <img src={publication.imageUrl} alt={publication.title} className={styles.image} />
           ) : (
             <StripePattern
@@ -85,6 +97,11 @@ const PublicationDetail = () => {
               className={styles.image}
             />
           )}
+          {!embed && publication.externalUrl ? (
+            <a href={publication.externalUrl} target="_blank" rel="noreferrer" className={styles.externalLink}>
+              Escuchar / ver enlace externo ↗
+            </a>
+          ) : null}
         </Col>
 
         <Col lg={6}>

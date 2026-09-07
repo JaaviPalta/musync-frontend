@@ -133,38 +133,55 @@ const NewPublication = () => {
                 </Form.Group>
 
                 <Row className="g-3">
-                  <Col md={6}>
-                    <Form.Group className={styles.field}>
-                      <Form.Label className={styles.fieldLabel}>Precio (CLP)</Form.Label>
-                      <div className={styles.priceRow}>
-                        <Form.Control
-                          type="number"
-                          placeholder="9900"
-                          disabled={type === 'portfolio'}
-                          {...register('price')}
-                        />
-                        {type === 'service' ? (
-                          <Button
-                            type="button"
-                            variant="outline-secondary"
-                            size="sm"
-                            onClick={() => setValue('price', '')}
-                          >
-                            Cotizar
-                          </Button>
+                  {type !== 'portfolio' ? (
+                    <Col md={6}>
+                      <Form.Group className={styles.field}>
+                        <Form.Label className={styles.fieldLabel}>Precio (CLP)</Form.Label>
+                        <div className={styles.priceRow}>
+                          <Form.Control
+                            type="number"
+                            placeholder="9900"
+                            {...register('price')}
+                          />
+                          {type === 'service' ? (
+                            <Button
+                              type="button"
+                              variant="outline-secondary"
+                              size="sm"
+                              onClick={() => setValue('price', '')}
+                            >
+                              Cotizar
+                            </Button>
+                          ) : null}
+                        </div>
+                        {type === 'service' && !preview.price ? (
+                          <small className={styles.priceHint}>
+                            Sin precio fijo: en tu página se muestra "Solicitar cotización".
+                          </small>
                         ) : null}
-                      </div>
-                      {type === 'service' && !preview.price ? (
+                      </Form.Group>
+                    </Col>
+                  ) : null}
+                  <Col md={type !== 'portfolio' ? 6 : 12}>
+                    <Form.Group className={styles.field}>
+                      <Form.Label className={styles.fieldLabel}>
+                        {type === 'music' || type === 'portfolio'
+                          ? 'Link de Spotify o YouTube'
+                          : 'Enlace externo (opcional)'}
+                      </Form.Label>
+                      <Form.Control
+                        placeholder={
+                          type === 'music' || type === 'portfolio'
+                            ? 'https://open.spotify.com/track/... o https://youtube.com/watch?v=...'
+                            : 'https://spotify.com/...'
+                        }
+                        {...register('externalUrl')}
+                      />
+                      {type === 'music' || type === 'portfolio' ? (
                         <small className={styles.priceHint}>
-                          Sin precio fijo: en tu página se muestra "Solicitar cotización".
+                          Se muestra reproducible directo en tu página, sin sacar al visitante.
                         </small>
                       ) : null}
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className={styles.field}>
-                      <Form.Label className={styles.fieldLabel}>Enlace externo (opcional)</Form.Label>
-                      <Form.Control placeholder="https://spotify.com/..." {...register('externalUrl')} />
                     </Form.Group>
                   </Col>
                 </Row>
