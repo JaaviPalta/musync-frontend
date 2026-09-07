@@ -135,16 +135,6 @@ const Quotes = () => {
           </div>
         ))
       )}
-
-      <p className={styles.footerHint}>
-        Estados disponibles:{' '}
-        {QUOTE_FILTERS.slice(1).map((status, index) => (
-          <span key={status.key}>
-            {index ? ' · ' : ''}
-            {status.label}
-          </span>
-        ))}
-      </p>
     </div>
   )
 }
