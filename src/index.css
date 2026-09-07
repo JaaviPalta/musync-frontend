@@ -92,6 +92,16 @@ body {
   box-shadow: 0 0 0 0.2rem rgba(var(--musync-accent-rgb), 0.25);
 }
 
+/* El ícono del input type="date" lo dibuja el navegador, siempre en negro
+   por defecto — invisible sobre el fondo oscuro de Nocturne. invert(1) lo
+   pasa a blanco; opacity baja un poco la intensidad para que no compita
+   con el texto. */
+input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.8;
+  cursor: pointer;
+}
+
 .swal-cancel-outline {
   background: transparent !important;
   border: 1px solid var(--musync-border) !important;
