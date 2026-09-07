@@ -247,7 +247,7 @@ const NewPublication = () => {
           </div>
 
           <div className={styles.sidebarCard}>
-            <span className={styles.sidebarTitle}>Qué hace cada tipo</span>
+            <span className={styles.sidebarTitle}>{PUBLICATION_TYPE_LABELS[type]}</span>
             <p className={styles.sidebarText}>
               {PUBLICATION_TYPE_OPTIONS.find((o) => o.code === type)?.helper}
             </p>
