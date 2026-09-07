@@ -50,7 +50,10 @@ const PublicProfile = () => {
     .map((show) => ({ ...show, date: show.showDate }))
   const pastShows = shows
     .filter((show) => new Date(show.showDate) < new Date())
-    .map((show) => ({ ...show, dateLabel: new Date(show.showDate).toLocaleDateString('es-CL') }))
+    .map((show) => ({
+      ...show,
+      dateLabel: new Date(show.showDate).toLocaleDateString('es-CL', { timeZone: 'UTC' }),
+    }))
 
   const publishedPublications = useMemo(
     () => publications.filter((p) => p.isActive !== false),
@@ -182,6 +185,7 @@ const PublicProfile = () => {
                       {new Date(show.date).toLocaleDateString('es-CL', {
                         day: 'numeric',
                         month: 'short',
+                        timeZone: 'UTC',
                       })}{' '}
                       · {show.city}
                     </span>

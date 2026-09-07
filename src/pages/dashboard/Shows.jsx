@@ -52,6 +52,7 @@ const Shows = () => {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric',
+                        timeZone: 'UTC',
                       })}{' '}
                       · {show.city}
                     </span>
@@ -69,19 +70,19 @@ const Shows = () => {
 
             <Form onSubmit={handleSubmit(addShow)} className={styles.addForm}>
               <Row className="g-2">
-                <Col md={5}>
+                <Col md={4}>
                   <Form.Control
                     placeholder="Nombre del show"
                     {...register('name', { required: true })}
                   />
                 </Col>
-                <Col md={4}>
+                <Col md={3}>
                   <Form.Control placeholder="Ciudad, país" {...register('city', { required: true })} />
                 </Col>
-                <Col md={2}>
+                <Col md={3}>
                   <Form.Control type="date" {...register('date', { required: true })} />
                 </Col>
-                <Col md={1}>
+                <Col md={2}>
                   <Button type="submit" variant="outline-primary" className={styles.addBtn}>
                     +
                   </Button>
