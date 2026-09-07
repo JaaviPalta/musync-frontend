@@ -12,6 +12,7 @@
 
   --bs-body-bg: var(--musync-bg);
   --bs-body-color: var(--musync-text);
+  --bs-secondary-color: var(--musync-text-muted);
   --bs-border-color: var(--musync-border);
   --bs-border-radius: var(--musync-radius);
   --bs-border-radius-lg: var(--musync-radius);
