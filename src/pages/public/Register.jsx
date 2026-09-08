@@ -23,6 +23,7 @@ const Register = () => {
       username: data.artistName.toLowerCase().replace(/[^a-z0-9_-]/g, '-'),
       email: data.email,
       password: data.password,
+      role: data.role,
     })
     navigate('/dashboard')
     toast.success(`¡Cuenta creada! Bienvenido/a, ${data.artistName}.`)
@@ -46,6 +47,19 @@ const Register = () => {
             <Form.Control.Feedback type="invalid">
               {errors.artistName?.message}
             </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className={styles.field}>
+            <Form.Label>Rol</Form.Label>
+            <Form.Select
+              defaultValue="artist"
+              isInvalid={!!errors.role}
+              {...register('role', { required: 'Selecciona un rol' })}
+            >
+              <option value="artist">Artista</option>
+              <option value="client">Cliente</option>
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">{errors.role?.message}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className={styles.field}>

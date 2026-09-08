@@ -95,6 +95,7 @@ const Landing = () => {
           <nav className={styles.nav}>
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#por-que">Para quién es</a>
+            <Link to="/explorar">Explorar artistas</Link>
             <Link to="/artista/demo">Ejemplo</Link>
           </nav>
           {user ? (

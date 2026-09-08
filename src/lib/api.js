@@ -72,6 +72,7 @@ export const api = {
         ? profileMultipart(data)
         : json('PATCH', data),
     ),
+  getArtists: () => request('/artists'),
   getProfile: (username) =>
     request(`/artists/${encodeURIComponent(username)}`).then(normalizeArtistProfile),
   getPublications: () => request('/publications'),

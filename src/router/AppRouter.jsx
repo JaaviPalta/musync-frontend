@@ -6,6 +6,7 @@ import DashboardLayout from '../components/layout/DashboardLayout'
 import Landing from '../pages/public/Landing'
 import Register from '../pages/public/Register'
 import Login from '../pages/public/Login'
+import Explore from '../pages/public/Explore'
 import PublicProfile from '../pages/public/PublicProfile'
 import PublicationDetail from '../pages/public/PublicationDetail'
 import RequestQuote from '../pages/public/RequestQuote'
@@ -31,6 +32,7 @@ const AppRouter = () => {
       <Route element={<PublicLayout />}>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/explorar" element={<Explore />} />
         <Route path="/artista/:username" element={<PublicProfile />} />
         <Route path="/publication/:id" element={<PublicationDetail />} />
         <Route path="/publication/:id/cotizar" element={<RequestQuote />} />

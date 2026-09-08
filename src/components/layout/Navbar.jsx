@@ -19,6 +19,9 @@ const Navbar = () => {
           MUSYNC
         </BsNavbar.Brand>
         <Nav className="ms-auto align-items-center">
+          <Nav.Link as={Link} to="/explorar" className={styles.navLink}>
+            Explorar artistas
+          </Nav.Link>
           {user ? (
             <>
               <Nav.Link as={Link} to="/cart" className={styles.navLink}>
@@ -33,9 +36,11 @@ const Navbar = () => {
               </Nav.Link>
             </>
           ) : (
-            <Nav.Link as={Link} to="/login" className={styles.navLink}>
-              Log in
-            </Nav.Link>
+            <>
+              <Nav.Link as={Link} to="/login" className={styles.navLink}>
+                Log in
+              </Nav.Link>
+            </>
           )}
         </Nav>
       </Container>
