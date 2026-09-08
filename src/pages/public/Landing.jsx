@@ -5,7 +5,7 @@ import { Diamond } from 'lucide-react'
 import StripePattern from '../../components/ui/StripePattern'
 import { PublicationsContext } from '../../context/PublicationsContext'
 import { UserContext } from '../../context/UserContext'
-import { priceLabel } from '../../utils/publications'
+import { demoArtistProfile } from '../../utils/demoArtist'
 import styles from './Landing.module.css'
 
 const steps = [
@@ -81,9 +81,8 @@ const Landing = () => {
     roleLine: user?.artistProfile?.roleLine ?? 'Artista independiente',
   }
   const profilePath = `/artista/${artistProfile.username}`
-  const previewPublications = ['music', 'digital_product', 'service', 'portfolio'].map((type) =>
-    publications.find((p) => p.type === type),
-  ).filter(Boolean)
+  const demoProfile = demoArtistProfile
+  const previewTags = demoProfile.tags?.slice(0, 3) ?? []
 
   return (
     <div className={styles.page}>
@@ -143,40 +142,48 @@ const Landing = () => {
             </Col>
 
             <Col lg={6}>
-              <div className={styles.previewCard}>
-                <StripePattern className={styles.previewCover} />
-                <div className={styles.previewBody}>
-                  <StripePattern tone="neutral" className={styles.previewAvatar} />
-                  <span className={styles.previewHandle}>
-                    musync.com/{artistProfile.username}
-                  </span>
-                  <h2 className={styles.previewName}>{artistProfile.artistName}</h2>
-                  <p className={styles.previewRole}>{artistProfile.roleLine}</p>
+              <Link to="/artista/demo" className={styles.previewCardLink}>
+                <div className={styles.previewCard}>
+                  {demoProfile.coverImageUrl ? (
+                    <img src={demoProfile.coverImageUrl} alt="" className={styles.previewCover} />
+                  ) : (
+                    <StripePattern className={styles.previewCover} />
+                  )}
 
-                  <div className={styles.previewGrid}>
-                    {previewPublications.map((pub) => (
-                      <div key={pub.id} className={styles.previewItem}>
-                        <span className={styles.previewItemLabel}>
-                          {
-                            publicationTypes.find((t) => t.code === pub.type)?.label
-                          }
+                  <div className={styles.previewBody}>
+                    {demoProfile.avatarImageUrl ? (
+                      <img
+                        src={demoProfile.avatarImageUrl}
+                        alt=""
+                        className={styles.previewAvatar}
+                      />
+                    ) : (
+                      <StripePattern tone="neutral" className={styles.previewAvatar} />
+                    )}
+
+                    <span className={styles.previewHandle}>musync.com/{demoProfile.username}</span>
+                    <h2 className={styles.previewName}>{demoProfile.artistName}</h2>
+                    <p className={styles.previewRole}>{demoProfile.roleLine}</p>
+
+                    <div className={styles.previewTags}>
+                      {previewTags.map((tag) => (
+                        <span key={tag} className={styles.previewTag}>
+                          {tag}
                         </span>
-                        <strong>{pub.title}</strong>
-                        <span className={styles.previewItemPrice}>{priceLabel(pub)}</span>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
 
-                  <div className={styles.previewActions}>
-                    <Button variant="outline-primary" size="sm">
-                      Contrátame
-                    </Button>
-                    <Button variant="outline-secondary" size="sm">
-                      Escuchar
-                    </Button>
+                    <div className={styles.previewActions}>
+                      <Button variant="outline-primary" size="sm">
+                        Contrátame
+                      </Button>
+                      <Button variant="outline-secondary" size="sm">
+                        Escuchar
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </Col>
           </Row>
         </Container>
