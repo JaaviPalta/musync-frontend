@@ -230,11 +230,6 @@
   margin: 6px 0;
 }
 
-.cardCode {
-  color: var(--musync-text-muted);
-  font-size: 0.8rem;
-}
-
 .cardText {
   color: var(--musync-text-muted);
   font-size: 0.9rem;

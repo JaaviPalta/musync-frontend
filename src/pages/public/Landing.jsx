@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Diamond } from 'lucide-react'
 import StripePattern from '../../components/ui/StripePattern'
-import { PublicationsContext } from '../../context/PublicationsContext'
 import { UserContext } from '../../context/UserContext'
 import { demoArtistProfile } from '../../utils/demoArtist'
 import styles from './Landing.module.css'
@@ -221,7 +220,6 @@ const Landing = () => {
                 <Col key={type.code} sm={6} lg={3}>
                   <div className={styles.card}>
                     <h3 className={styles.cardTitle}>{type.label}</h3>
-                    <code className={styles.cardCode}>{type.code}</code>
                     <p className={styles.cardText}>{type.text}</p>
                   </div>
                 </Col>
