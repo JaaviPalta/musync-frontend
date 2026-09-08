@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Form, Button } from 'react-bootstrap'
@@ -7,8 +7,15 @@ import { UserContext } from '../../context/UserContext'
 import styles from './Auth.module.css'
 
 const Login = () => {
-  const { login } = useContext(UserContext)
+  const { login, user } = useContext(UserContext)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!user) return
+
+    const destination = user.role === 'artist' ? '/dashboard' : '/explorar'
+    navigate(destination, { replace: true })
+  }, [user, navigate])
   const {
     register,
     handleSubmit,
@@ -35,9 +42,12 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      await login(data)
-      navigate('/dashboard')
-      toast.success('¡Bienvenido de nuevo!')
+      const result = await login(data)
+      const role = result?.user?.role ?? result?.role ?? 'artist'
+      const destination = role === 'artist' ? '/dashboard' : '/explorar'
+
+      navigate(destination)
+      toast.success(role === 'artist' ? '¡Bienvenido de nuevo!' : '¡Bienvenido!')
     } catch (error) {
       toast.error(getLoginErrorMessage(error))
     }

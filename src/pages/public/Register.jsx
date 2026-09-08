@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Form, Button } from 'react-bootstrap'
@@ -7,8 +7,15 @@ import { UserContext } from '../../context/UserContext'
 import styles from './Auth.module.css'
 
 const Register = () => {
-  const { register: createAccount } = useContext(UserContext)
+  const { register: createAccount, user } = useContext(UserContext)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!user) return
+
+    const destination = user.role === 'artist' ? '/dashboard' : '/explorar'
+    navigate(destination, { replace: true })
+  }, [user, navigate])
   const {
     register,
     handleSubmit,
@@ -17,7 +24,7 @@ const Register = () => {
   } = useForm()
 
   const onSubmit = async (data) => {
-    await createAccount({
+    const result = await createAccount({
       name: data.artistName,
       artistName: data.artistName,
       username: data.artistName.toLowerCase().replace(/[^a-z0-9_-]/g, '-'),
@@ -25,8 +32,16 @@ const Register = () => {
       password: data.password,
       role: data.role,
     })
-    navigate('/dashboard')
-    toast.success(`¡Cuenta creada! Bienvenido/a, ${data.artistName}.`)
+
+    const role = result?.user?.role ?? result?.role ?? data.role
+    const destination = role === 'artist' ? '/dashboard' : '/explorar'
+
+    navigate(destination)
+    toast.success(
+      role === 'artist'
+        ? `¡Cuenta creada! Bienvenido/a, ${data.artistName}.`
+        : `¡Cuenta creada! Ya puedes explorar artistas.`,
+    )
   }
 
   return (

@@ -9,6 +9,16 @@ const normalizeProfile = (profile) => ({
   coverImageUrl: profile?.coverImageUrl ?? profile?.coverUrl ?? profile?.cover_url,
 })
 
+const normalizeRole = (userPayload) => {
+  const role = userPayload?.role ?? userPayload?.userRole ?? userPayload?.type ?? userPayload?.accountType
+
+  if (role === 'artist' || role === 'client') {
+    return role
+  }
+
+  return userPayload?.artistProfile || userPayload?.profile ? 'artist' : 'client'
+}
+
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   // Mientras esto es true, todavía no sabemos si hay una sesión válida o no.
@@ -17,11 +27,16 @@ const UserProvider = ({ children }) => {
   // localStorage sea válido — pasaba en cualquier recarga completa de página.
   const [isLoading, setIsLoading] = useState(true)
 
-  const setAuthenticatedUser = (result) =>
+  const setAuthenticatedUser = (result) => {
+    const userPayload = result?.user ?? result ?? {}
+    const profile = result?.profile ?? userPayload?.profile ?? null
+
     setUser({
-      ...result.user,
-      artistProfile: normalizeProfile(result.profile),
+      ...userPayload,
+      role: normalizeRole(userPayload),
+      artistProfile: profile ? normalizeProfile(profile) : userPayload?.artistProfile ?? null,
     })
+  }
 
   useEffect(() => {
     if (!localStorage.getItem('musync_token')) {
@@ -36,7 +51,11 @@ const UserProvider = ({ children }) => {
   }, [])
 
   const authenticate = (result) => {
-    localStorage.setItem('musync_token', result.token)
+    const token = result?.token || result?.user?.token
+    if (token) {
+      localStorage.setItem('musync_token', token)
+    }
+
     setAuthenticatedUser(result)
     return result
   }

@@ -42,9 +42,8 @@ const AppRouter = () => {
       </Route>
 
       {/* Rutas privadas: requieren sesión y usan el sidebar */}
-      <Route element={<ProtectedRoute />}>
+      <Route element={<ProtectedRoute allowedRoles={['artist']} redirectTo="/login" />}>
         <Route element={<DashboardLayout />}>
-          <Route path="/cart" element={<Cart />} />
           <Route path="/dashboard" element={<DashboardHome />} />
           <Route path="/dashboard/profile" element={<EditProfile />} />
           <Route path="/dashboard/publications" element={<MyPublications />} />
@@ -53,6 +52,12 @@ const AppRouter = () => {
           <Route path="/dashboard/quotes" element={<Quotes />} />
           <Route path="/dashboard/shows" element={<Shows />} />
           <Route path="/dashboard/orders" element={<Orders />} />
+        </Route>
+      </Route>
+
+      <Route element={<ProtectedRoute allowedRoles={['artist', 'client']} redirectTo="/login" />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="/cart" element={<Cart />} />
         </Route>
       </Route>
 

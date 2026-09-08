@@ -4,9 +4,11 @@ import { Spinner } from 'react-bootstrap'
 import { toast } from 'sonner'
 import { UserContext } from '../context/UserContext'
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ allowedRoles = ['artist', 'client'], redirectTo = '/login' }) => {
   const { user, isLoading } = useContext(UserContext)
   const location = useLocation()
+  const role = user?.role ?? 'client'
+  const isAllowed = allowedRoles.includes(role)
 
   useEffect(() => {
     // Mientras isLoading es true todavía no sabemos si hay sesión (se está
@@ -15,15 +17,26 @@ const ProtectedRoute = () => {
     // manda a /login por un instante aunque el usuario sí esté logueado.
     if (isLoading) return
 
-    if (!user && location.pathname.startsWith('/dashboard')) {
-      toast.error('Debes iniciar sesión para acceder al panel.')
+    if (!user) {
+      if (location.pathname.startsWith('/dashboard')) {
+        toast.error('Debes iniciar sesión para acceder al panel.')
+      }
+
+      if (location.pathname === '/cart') {
+        toast.error('Debes iniciar sesión para ver tu carrito.')
+      }
+
       return
     }
 
-    if (!user && location.pathname === '/cart') {
-      toast.error('Debes iniciar sesión para ver tu carrito.')
+    if (!isAllowed) {
+      if (role === 'artist') {
+        toast.error('Esta vista es solo para clientes.')
+      } else {
+        toast.error('Esta vista es solo para artistas.')
+      }
     }
-  }, [user, isLoading, location.pathname])
+  }, [user, isLoading, location.pathname, isAllowed, role])
 
   if (isLoading) {
     return (
@@ -35,7 +48,15 @@ const ProtectedRoute = () => {
     )
   }
 
-  return user ? <Outlet /> : <Navigate to="/login" replace />
+  if (!user) {
+    return <Navigate to={redirectTo} replace state={{ from: location }} />
+  }
+
+  if (!isAllowed) {
+    return <Navigate to={role === 'artist' ? '/dashboard' : '/explorar'} replace />
+  }
+
+  return <Outlet />
 }
 
 export default ProtectedRoute
