@@ -72,7 +72,6 @@ const reasons = [
 ]
 
 const Landing = () => {
-  const { publications } = useContext(PublicationsContext)
   const { user, logout } = useContext(UserContext)
   const artistProfile = {
     username: user?.artistProfile?.username ?? 'demo',
