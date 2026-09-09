@@ -202,13 +202,13 @@ const NewPublication = () => {
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
                       {...register('image', {
-                        validate: (files) => !files?.[0] || files[0].size <= 5 * 1024 * 1024 || 'La imagen no puede superar 5 MB',
+                        validate: (files) => !files?.[0] || files[0].size <= 4 * 1024 * 1024 || 'La imagen no puede superar 4 MB',
                       })}
                     />
                     {imagePreview ? (
                       <img src={imagePreview} alt="Vista previa de portada" className={styles.imagePreview} />
                     ) : (
-                      <span>Selecciona una imagen JPG, PNG o WebP (máximo 5 MB)</span>
+                      <span>Selecciona una imagen JPG, PNG o WebP (máximo 4 MB)</span>
                     )}
                   </label>
                   {errors.image ? <small className={styles.error}>{errors.image.message}</small> : null}
