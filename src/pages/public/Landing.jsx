@@ -229,7 +229,7 @@ const Landing = () => {
 
         <section id="por-que" className={styles.section}>
           <Container>
-            <h2 className={styles.sectionTitle}>Por qué centralizar tu presencia</h2>
+            <h2 className={styles.sectionTitle}>Por qué centralizar tu carrera</h2>
             <Row className="g-4 mt-1">
               {reasons.map((reason) => (
                 <Col key={reason.n} md={4}>
