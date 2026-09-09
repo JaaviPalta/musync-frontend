@@ -54,7 +54,7 @@ const EditProfile = () => {
     try {
       await updateProfile({
       artistName: data.artistName,
-      roleLine: data.roleLine,
+      specialty: data.roleLine,
       bio: data.bio,
       city: data.city,
       country: data.country,

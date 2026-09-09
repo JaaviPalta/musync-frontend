@@ -4,6 +4,11 @@ import { api } from '../lib/api'
 
 const normalizeProfile = (profile) => ({
   ...profile,
+  // El backend guarda esto como "specialty" — EditProfile.jsx lee "roleLine".
+  // Sin este mapeo, el campo "Rol / especialidad" se ve vacío al volver a
+  // esta pantalla, aunque el dato sí esté bien guardado (por eso el perfil
+  // público, que sí lo traduce, lo mostraba bien y este formulario no).
+  roleLine: profile?.roleLine ?? profile?.specialty,
   tags: Array.isArray(profile?.tags) ? profile.tags : [],
   avatarImageUrl: profile?.avatarImageUrl ?? profile?.avatarUrl ?? profile?.avatar_url,
   coverImageUrl: profile?.coverImageUrl ?? profile?.coverUrl ?? profile?.cover_url,
