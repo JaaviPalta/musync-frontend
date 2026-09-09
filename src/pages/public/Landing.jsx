@@ -250,7 +250,7 @@ const Landing = () => {
               <div>
                 <h2 className={styles.ctaTitle}>Arma tu página hoy</h2>
                 <p className={styles.ctaText}>
-                  Gratis para crear tu perfil y publicar. Sin comisiones en el MVP.
+                  Gratis para crear tu perfil y publicar.
                 </p>
               </div>
               <Button as={Link} to={user ? profilePath : '/register'} variant="outline-primary">
