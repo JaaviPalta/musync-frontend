@@ -14,7 +14,15 @@ async function request(path, options = {}) {
 
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) {
-    throw new Error(payload.message || 'No se pudo completar la solicitud')
+    // Las respuestas de error del backend van en payload.error.message, no en
+    // payload.message (eso solo existe en las respuestas exitosas) — sin esto,
+    // cualquier error real (validación, conflicto, etc.) quedaba tapado por el
+    // mensaje genérico de acá abajo, en cualquier pantalla de toda la app.
+    const detail = payload.error?.details?.[0]?.message
+    const message = payload.error?.message || payload.message
+    throw new Error(
+      [message, detail].filter(Boolean).join(': ') || 'No se pudo completar la solicitud',
+    )
   }
 
   return payload.data
